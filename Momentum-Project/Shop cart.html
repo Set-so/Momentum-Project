@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart | Momentum Records</title>
+    <link rel="icon" type="image/x-icon" href="assets/Momentum Records Logo.PNG">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <!-- AGREGAR ESTE SCRIPT (igual que el homepage) -->
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/lucide.min.js"></script>
+<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    
+    <style>
+        /* ========== ESTILOS DEL NAVBAR IDÉNTICOS AL HOME PAGE ========== */
+        .nav-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            border: 1px solid #374151;
+        }
+        
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -2rem;
+        }
+        
+        /* ========== ESTILOS PARA MENÚ MÓVIL ========== */
+        #mobileMenu {
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+        
+        /* Overlay para fondo cuando el menú está abierto */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animación suave para los enlaces del menú móvil */
+        #mobileMenu a {
+            transform: translateX(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        #mobileMenu.active a:nth-child(1) { transition-delay: 0.1s; }
+        #mobileMenu.active a:nth-child(2) { transition-delay: 0.15s; }
+        #mobileMenu.active a:nth-child(3) { transition-delay: 0.2s; }
+        #mobileMenu.active a:nth-child(4) { transition-delay: 0.25s; }
+        #mobileMenu.active a:nth-child(5) { transition-delay: 0.3s; }
+        
+        #mobileMenu.active a {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Asegurar que el menú móvil no se desborde en pantallas muy pequeñas */
+        @media (max-width: 640px) {
+            #mobileMenu {
+                width: 100%;
+            }
+        }
+        
+        /* Imagen de fondo a la izquierda (igual que homepage) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/1200x/ef/3d/2e/ef3d2e6005efc7f71ba8b396047a5f43.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @media (max-width: 1024px) {
+            body::before {
+                width: 200px;
+                opacity: 0.1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+        }
+
+        /* Scrollbar personalizado para modo oscuro (igual que homepage) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Estilo para dark-card (igual que homepage) */
+        .dark-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        
+        /* =========================================== */
+        /* AÑADIR ANIMACIONES DEL HOMEPAGE (opcional) */
+        /* =========================================== */
+        
+        /* Animación para el navbar al hacer scroll */
+        nav.sticky {
+            transition: all 0.3s ease;
+        }
+        
+        nav.sticky.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Animación para el contador del carrito */
+        #cartCounter {
+            transition: all 0.3s ease;
+        }
+        
+        #cartCounter:not(.hidden) {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Animación para los iconos de feather */
+        i[data-feather] {
+            transition: all 0.3s ease;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trust-card {
+                animation: cardFloatMobile 8s ease-in-out infinite;
+            }
+        }
+        
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .dark-card {
+            transition: all 0.3s ease;
+        }
+        
+        .dark-card:hover {
+            transform: translateY(-2px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Estilos específicos para carrito */
+        .cart-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.5rem 0;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #6366f1;
+        }
+        
+        .quantity-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .remove-btn {
+            color: #ef4444;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .remove-btn:hover {
+            color: #dc2626;
+        }
+        
+        /* Métodos de pago */
+        .payment-method {
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1rem;
+        }
+        
+        .payment-method:hover {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(99, 102, 241, 0.05);
+        }
+        
+        .payment-method.selected {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+        }
+        
+        .payment-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+        }
+        
+        .credit-card-icon { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
+        .paypal-icon { background: linear-gradient(135deg, #009cde, #003087); }
+        .crypto-icon { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .bank-icon { background: linear-gradient(135deg, #10b981, #059669); }
+        
+        /* Formularios de pago */
+        .payment-form {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Inputs estilizados */
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.5rem;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        /* Resumen de orden */
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        
+        /* Botones */
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Empty cart state */
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .empty-cart-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cart-item-info {
+                width: 100%;
+            }
+            
+            .cart-item-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <!-- Navigation Bar Personalizada  -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-7">
+                <img 
+                    src="assets/Momentum Records Logo.PNG"
+                    alt="Momentum Records Logo"
+                    class="w-16 h-16 object-contain"
+                >
+                <span class="text-2xl font-bold bg-gradient-to-r from-red-800 to-pink-400 bg-clip-text text-transparent">
+                    Momentum Records
+                </span>
+            </div>
+            
+            <!-- Botón Hamburguesa (solo visible en móviles) -->
+            <button id="menuToggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Navegación con Iconos (oculto en móviles por defecto) -->
+            <div id="navMenu" class="hidden md:flex items-center gap-4">
+                <!-- Icono Home -->
+                <a href="Index.html" 
+                   class="nav-icon "
+                   title="Home">
+                    <i data-feather="home" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Home</span>
+                </a>
+                
+                <!-- Icono What's New -->
+                <a href="New Releases.html" 
+                   class="nav-icon"
+                   title="New Releases">
+                    <i data-feather="star" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">New Releases</span>
+                </a>
+                
+                <!-- Icono Albums -->
+                <a href="Albums.html" 
+                   class="nav-icon"
+                   title="Albums">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Albums</span>
+                </a>
+
+                <!-- Icono Beats -->
+                <a href="Beats.html" 
+                   class="nav-icon"
+                   title="Beats">
+                    <i data-feather="headphones" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Beats</span>
+                </a>
+                
+                <!-- Icono Cart -->
+                <a href="Shop cart.html" 
+                   class="nav-icon active"
+                   title="Cart">
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Shopping Cart</span>
+                    <!-- Contador de carrito (opcional) -->
+                    <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Menú móvil colapsable (slide-in desde la derecha) -->
+        <div id="mobileMenu" class="md:hidden fixed inset-y-0 right-0 w-64 bg-black/95 backdrop-blur-lg border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-40">
+            <div class="p-6">
+                <!-- Encabezado del menú móvil -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="C:\Users\kevin\OneDrive\Desktop\Momentum\logo transparente.png"
+                            alt="Momentum Records Logo"
+                            class="w-8 h-8 object-contain"
+                        >
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            Menu
+                        </span>
+                    </div>
+                    <button id="closeMenu" class="text-gray-300 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Iconos en menú móvil -->
+                <div class="space-y-4">
+                    <a href="Index.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-white">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Home</span>
+                    </a>
+
+                    <a href="New Releases.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="star" class="w-5 h-5"></i>
+                        <span>New Releases</span>
+                    </a>
+
+                    <a href="Albums.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="layers" class="w-5 h-5"></i>
+                        <span>Albums</span>
+                    </a>
+
+                    <a href="Beats.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="headphones" class="w-5 h-5"></i>
+                        <span>Beats</span>
+                    </a>
+                    
+                    <a href="Shop cart.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative">
+                        <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                        <span>Shopping Cart</span>
+                        <span id="mobileCartCounter" class="absolute left-8 -top-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+                
+                <!-- Separador -->
+                <div class="my-6 border-t border-gray-800"></div>
+                
+                <!-- Información adicional opcional -->
+                <div class="text-gray-400 text-sm">
+                    <p class="mb-2">Premium audio production since 2021</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen pb-20">
+        <div class="container mx-auto px-6 py-8">
+            <!-- Breadcrumb -->
+            <div class="mb-8">
+                <nav class="flex" aria-label="Breadcrumb">
+                    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                        <li class="inline-flex items-center">
+                            <a href="Index.html" class="inline-flex items-center text-sm text-gray-400 hover:text-white">
+                                <i data-feather="home" class="w-4 h-4 mr-2"></i>
+                                Home
+                            </a>
+                        </li>
+                        <li aria-current="page">
+                            <div class="flex items-center">
+                                <i data-feather="chevron-right" class="w-4 h-4 text-gray-600 mx-2"></i>
+                                <span class="text-sm font-medium text-white">Shopping Cart</span>
+                            </div>
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+            <h1 class="text-4xl md:text-5xl font-bold mb-8">Your Shopping Cart</h1>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left Column: Cart Items -->
+                <div class="lg:col-span-2">
+                    <div id="cartItemsContainer" class="dark-card p-6">
+                        <!-- Los items del carrito se cargarán aquí -->
+                        <div class="empty-cart" id="emptyCart">
+                            <div class="empty-cart-icon">
+                                <i data-feather="shopping-cart" class="w-10 h-10 text-gray-400"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold mb-4">Your cart is empty</h3>
+                            <p class="text-gray-400 mb-6">Looks like you haven't added any items to your cart yet.</p>
+                            <a href="New Releases.html" 
+                               class="inline-block px-6 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                                Browse Products
+                            </a>
+                        </div>
+                        
+                        <!-- Template para items del carrito (hidden por defecto) -->
+                        <div id="cartItemsList" style="display: none;">
+                            <!-- Los items se agregarán aquí dinámicamente -->
+                        </div>
+                    </div>
+                    
+                    <!-- Continue Shopping -->
+                    <div class="mt-6">
+                        <a href="fill" 
+                           class="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 font-semibold">
+                            <i data-feather="arrow-left" class="w-4 h-4"></i>
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Right Column: Order Summary & Payment -->
+                <div class="space-y-6">
+                    <!-- Order Summary -->
+                    <div class="dark-card p-6">
+                        <h3 class="text-xl font-bold mb-6">Order Summary</h3>
+                        
+                        <div class="space-y-4">
+                            <div class="order-summary-item">
+                                <span>Subtotal</span>
+                                <span id="orderSubtotal">$0.00</span>
+                            </div>
+                            <div class="order-summary-item">
+                                <span>Discount</span>
+                                <span id="orderDiscount">-$0.00</span>
+                            </div>
+                            <div class="order-summary-item">
+                                <span>Service Fee</span>
+                                <span id="orderFee">$0.00</span>
+                            </div>
+                            <div class="order-total">
+                                <span>Total</span>
+                                <span id="orderTotal">$0.00</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Discount Code -->
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium mb-2">Discount Code</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="discountCode" placeholder="Enter code" class="form-input flex-1">
+                                <button onclick="applyDiscount()" class="px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg font-semibold transition-colors">
+                                    Apply
+                                </button>
+                            </div>
+                            <div id="discountMessage" class="mt-2 text-sm"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Payment Methods -->
+                    <div class="dark-card p-6">
+                        <h3 class="text-xl font-bold mb-6">Payment Method</h3>
+                        
+                        <!-- Credit/Debit Card -->
+                        <div class="payment-method" onclick="selectPaymentMethod('card')">
+                            <div class="flex items-center">
+                                <div class="payment-icon credit-card-icon">
+                                    <i data-feather="credit-card" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold">Credit/Debit Card</h4>
+                                    <p class="text-sm text-gray-400">Pay with Visa, Mastercard, or American Express</p>
+                                </div>
+                                <i data-feather="check" class="w-5 h-5 text-green-400 hidden" id="cardCheck"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Credit Card Form -->
+                        <div id="cardForm" class="payment-form mt-4">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Card Number</label>
+                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" class="form-input">
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">Expiry Date</label>
+                                        <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" class="form-input">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium mb-2">CVV</label>
+                                        <input type="text" id="cardCvv" placeholder="123" maxlength="3" class="form-input">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Cardholder Name</label>
+                                    <input type="text" id="cardName" placeholder="John Doe" class="form-input">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- PayPal -->
+                        <div class="payment-method" onclick="selectPaymentMethod('paypal')">
+                            <div class="flex items-center">
+                                <div class="payment-icon paypal-icon">
+                                    <i data-feather="dollar-sign" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold">PayPal</h4>
+                                    <p class="text-sm text-gray-400">Pay with your PayPal account</p>
+                                </div>
+                                <i data-feather="check" class="w-5 h-5 text-green-400 hidden" id="paypalCheck"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- PayPal Form -->
+                        <div id="paypalForm" class="payment-form mt-4">
+                            <div class="p-4 bg-gray-900/50 rounded-lg">
+                                <p class="text-sm text-gray-300 mb-4">You will be redirected to PayPal to complete your payment securely.</p>
+                                <button onclick="processPayPal()" class="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 rounded-lg font-semibold transition-all duration-300">
+                                    Continue with PayPal
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Cryptocurrency -->
+                        <div class="payment-method" onclick="selectPaymentMethod('crypto')">
+                            <div class="flex items-center">
+                                <div class="payment-icon crypto-icon">
+                                    <i data-feather="" class="w-6 h-6 text-white"></i>
+                                    <i data-lucide="bitcoin"class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold">Cryptocurrency</h4>
+                                    <p class="text-sm text-gray-400">Pay with Bitcoin, Ethereum, or USDC</p>
+                                </div>
+                                <i data-feather="Bitcoin" class="w-5 h-5 text-green-400 hidden" id="cryptoCheck"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Crypto Form -->
+                        <div id="cryptoForm" class="payment-form mt-4">
+                            <div class="p-4 bg-gray-900/50 rounded-lg">
+                                <div class="mb-4">
+                                    <label class="block text-sm font-medium mb-2">Select Cryptocurrency</label>
+                                    <select id="cryptoType" class="form-input">
+                                        <option value="btc">Bitcoin (BTC)</option>
+                                        <option value="eth">Ethereum (ETH)</option>
+                                        <option value="usdc">USD Coin (USDC)</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <p class="text-sm text-gray-300">Send exact amount to:</p>
+                                    <div class="mt-2 p-3 bg-gray-800 rounded-lg">
+                                        <code class="text-sm break-all" id="cryptoAddress">1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa</code>
+                                    </div>
+                                </div>
+                                <button onclick="generateCryptoInvoice()" class="w-full py-3 bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 rounded-lg font-semibold transition-all duration-300">
+                                    Generate Payment Invoice
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Transfer -->
+                        <div class="payment-method" onclick="selectPaymentMethod('bank')">
+                            <div class="flex items-center">
+                                <div class="payment-icon bank-icon">
+                                    <i data-feather="bank" class="w-6 h-6 text-white"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="font-semibold">Bank Transfer</h4>
+                                    <p class="text-sm text-gray-400">Direct bank transfer (1-3 business days)</p>
+                                </div>
+                                <i data-feather="check" class="w-5 h-5 text-green-400 hidden" id="bankCheck"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Bank Form -->
+                        <div id="bankForm" class="payment-form mt-4">
+                            <div class="p-4 bg-gray-900/50 rounded-lg">
+                                <div class="mb-4">
+                                    <p class="text-sm font-semibold mb-2">Bank Details:</p>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Bank Name:</span>
+                                            <span>Momentum Bank</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Account Number:</span>
+                                            <span>1234 5678 9012</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">Routing Number:</span>
+                                            <span>021000021</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-gray-400">SWIFT/BIC:</span>
+                                            <span>MOMNUS33</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-300 mb-4">Please include your order number in the transfer reference.</p>
+                                <button onclick="generateBankInvoice()" class="w-full py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 rounded-lg font-semibold transition-all duration-300">
+                                    Download Invoice
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Checkout Button -->
+                    <div>
+                        <button onclick="processCheckout()" id="checkoutButton" class="btn-primary" disabled>
+                            Complete Purchase
+                        </button>
+                        <p class="text-xs text-gray-400 mt-3 text-center">
+                            By completing your purchase, you agree to our 
+                            <a href="#" class="text-indigo-400 hover:underline">Terms of Service</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Order Confirmation Modal -->
+    <div id="confirmationModal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-50 hidden">
+        <div class="dark-card p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i data-feather="check" class="w-10 h-10 text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Order Confirmed!</h3>
+                <p class="text-gray-300 mb-6" id="confirmationMessage">Your order has been successfully placed.</p>
+                <div class="space-y-3">
+                    <a href="file:///C:/Users/kevin/OneDrive/Desktop/matriz%20sin%20errores.html" class="btn-primary">
+                        Return to Home
+                    </a>
+                    <button onclick="closeConfirmation()" class="btn-secondary">
+                        Continue Shopping
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize feather icons (igual que homepage)
+        feather.replace();
+        
+        // Control del menú móvil (idéntico al homepage)
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            // Crear overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'menu-overlay';
+            document.body.appendChild(overlay);
+            
+            // Función para abrir menú
+            function openMenu() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                feather.replace();
+            }
+            
+            // Función para cerrar menú
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            menuToggle.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', closeMobileMenu);
+            
+            // Cerrar menú al hacer clic en un enlace (solo móvil)
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // Cerrar menú con tecla ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Actualizar iconos cuando se redimensione la ventana
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    closeMobileMenu();
+                }
+                feather.replace();
+            });
+            
+            // Product data (debe coincidir con la página de productos)
+            const products = {
+                1: { id: 1, name: "Midnight Trap", price: 49.99, category: "beats", image: "https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" },
+                2: { id: 2, name: "Eternal Love", price: 29.99, category: "lyrics", image: "https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" },
+                3: { id: 3, name: "Mix Like Pro", price: 79.99, category: "tutorials", image: "https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" },
+                4: { id: 4, name: "Lo-Fi Dreams", price: 39.99, category: "beats", image: "https://i.pinimg.com/1200x/4c/9a/15/4c9a1571402cf7c3ad7265ac56ea1f2f.jpg" },
+                5: { id: 5, name: "Battle Bars", price: 34.99, category: "lyrics", image: "https://i.pinimg.com/736x/a2/c6/d9/a2c6d9f063b5201741b5f65902ae8e32.jpg" },
+                6: { id: 6, name: "Vocal Magic", price: 89.99, category: "tutorials", image: "https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" },
+                7: { id: 7, name: "Synth Dreams", price: 54.99, category: "beats", image: "https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" },
+                8: { id: 8, name: "Urban Poetry", price: 24.99, category: "lyrics", image: "https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" }
+            };
+            
+            // Cart from localStorage
+            let cart = JSON.parse(localStorage.getItem('momentum_cart')) || [];
+            let selectedPaymentMethod = null;
+            let discountApplied = false;
+            let discountAmount = 0;
+            
+            // Inicializar contador del carrito (igual que homepage)
+            function updateCartCounter() {
+                const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+                const cartCounter = document.getElementById('cartCounter');
+                const mobileCartCounter = document.getElementById('mobileCartCounter');
+                
+                if (count > 0) {
+                    cartCounter.textContent = count;
+                    cartCounter.classList.remove('hidden');
+                    mobileCartCounter.textContent = count;
+                    mobileCartCounter.classList.remove('hidden');
+                } else {
+                    cartCounter.classList.add('hidden');
+                    mobileCartCounter.classList.add('hidden');
+                }
+            }
+            
+            // Inicializar carrito
+            function initCart() {
+                updateCartCounter();
+                updateCartDisplay();
+                feather.replace();
+            }
+            
+            // Update cart display
+            function updateCartDisplay() {
+                const cartItemsList = document.getElementById('cartItemsList');
+                const emptyCart = document.getElementById('emptyCart');
+                const checkoutButton = document.getElementById('checkoutButton');
+                
+                if (cart.length === 0) {
+                    emptyCart.style.display = 'block';
+                    cartItemsList.style.display = 'none';
+                    checkoutButton.disabled = true;
+                    checkoutButton.innerHTML = 'Cart is Empty';
+                    updateOrderSummary();
+                    updateCartCounter();
+                    return;
+                }
+                
+                emptyCart.style.display = 'none';
+                cartItemsList.style.display = 'block';
+                checkoutButton.disabled = false;
+                checkoutButton.innerHTML = `Complete Purchase - $${calculateTotal().toFixed(2)}`;
+                
+                // Clear and rebuild cart items
+                cartItemsList.innerHTML = '';
+                
+                cart.forEach(item => {
+                    const product = products[item.id];
+                    if (!product) return;
+                    
+                    const itemTotal = product.price * item.quantity;
+                    
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item flex flex-col md:flex-row md:items-center justify-between';
+                    cartItem.innerHTML = `
+                        <div class="cart-item-info flex items-center gap-4 mb-4 md:mb-0">
+                            <div class="w-16 h-16 rounded-lg overflow-hidden flex-shrink-0">
+                                <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">${product.name}</h4>
+                                <p class="text-sm text-gray-400">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
+                                <p class="text-indigo-400 font-semibold">$${product.price.toFixed(2)}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="cart-item-actions flex items-center justify-between md:justify-end gap-4">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(${product.id}, -1)">
+                                    <i data-feather="minus" class="w-4 h-4"></i>
+                                </button>
+                                <span class="quantity-display">${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${product.id}, 1)">
+                                    <i data-feather="plus" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <div class="text-right">
+                                <div class="font-bold">$${itemTotal.toFixed(2)}</div>
+                                <button class="remove-btn text-sm mt-1" onclick="removeItem(${product.id})">
+                                    <i data-feather="trash-2" class="w-4 h-4 inline mr-1"></i> Remove
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    
+                    cartItemsList.appendChild(cartItem);
+                });
+                
+                updateOrderSummary();
+                updateCartCounter();
+                feather.replace();
+            }
+            
+            // Update item quantity
+            function updateQuantity(productId, change) {
+                const itemIndex = cart.findIndex(item => item.id === productId);
+                
+                if (itemIndex !== -1) {
+                    cart[itemIndex].quantity += change;
+                    
+                    if (cart[itemIndex].quantity < 1) {
+                        cart.splice(itemIndex, 1);
+                    }
+                    
+                    localStorage.setItem('momentum_cart', JSON.stringify(cart));
+                    updateCartDisplay();
+                }
+            }
+            
+            // Remove item from cart
+            function removeItem(productId) {
+                if (confirm('Are you sure you want to remove this item from your cart?')) {
+                    cart = cart.filter(item => item.id !== productId);
+                    localStorage.setItem('momentum_cart', JSON.stringify(cart));
+                    updateCartDisplay();
+                }
+            }
+            
+            // Calculate cart totals
+            function calculateTotal() {
+                const subtotal = cart.reduce((sum, item) => {
+                    const product = products[item.id];
+                    return sum + (product.price * item.quantity);
+                }, 0);
+                
+                const serviceFee = 2.99;
+                const total = subtotal - discountAmount + serviceFee;
+                
+                return total > 0 ? total : 0;
+            }
+            
+            // Update order summary
+            function updateOrderSummary() {
+                const subtotal = cart.reduce((sum, item) => {
+                    const product = products[item.id];
+                    return sum + (product.price * item.quantity);
+                }, 0);
+                
+                const serviceFee = 2.99;
+                const total = calculateTotal();
+                
+                document.getElementById('orderSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('orderDiscount').textContent = `-$${discountAmount.toFixed(2)}`;
+                document.getElementById('orderFee').textContent = `$${serviceFee.toFixed(2)}`;
+                document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+            }
+            
+            // Apply discount code
+            function applyDiscount() {
+                const code = document.getElementById('discountCode').value.trim().toUpperCase();
+                const message = document.getElementById('discountMessage');
+                
+                const validCodes = {
+                    'WELCOME10': 0.10, // 10% discount
+                    'MOMENTUM20': 0.20, // 20% discount
+                    'BEATS30': 0.30, // 30% discount
+                    'FIRSTORDER': 5.00 // $5 off
+                };
+                
+                if (validCodes[code]) {
+                    const subtotal = cart.reduce((sum, item) => {
+                        const product = products[item.id];
+                        return sum + (product.price * item.quantity);
+                    }, 0);
+                    
+                    if (code === 'FIRSTORDER') {
+                        discountAmount = 5.00;
+                    } else {
+                        discountAmount = subtotal * validCodes[code];
+                    }
+                    
+                    discountApplied = true;
+                    message.innerHTML = `<span class="text-green-400">✓ Discount applied! -$${discountAmount.toFixed(2)}</span>`;
+                    updateCartDisplay();
+                } else if (code === '') {
+                    message.innerHTML = `<span class="text-yellow-400">Please enter a discount code</span>`;
+                } else {
+                    message.innerHTML = `<span class="text-red-400">Invalid discount code</span>`;
+                }
+            }
+            
+            // Select payment method
+            function selectPaymentMethod(method) {
+                selectedPaymentMethod = method;
+                
+                // Reset all payment forms and checks
+                document.querySelectorAll('.payment-form').forEach(form => {
+                    form.classList.remove('active');
+                });
+                document.querySelectorAll('.payment-method').forEach(method => {
+                    method.classList.remove('selected');
+                });
+                document.querySelectorAll('[id$="Check"]').forEach(check => {
+                    check.classList.add('hidden');
+                });
+                
+                // Activate selected method
+                document.getElementById(`${method}Form`).classList.add('active');
+                document.querySelector(`[onclick="selectPaymentMethod('${method}')"]`).classList.add('selected');
+                document.getElementById(`${method}Check`).classList.remove('hidden');
+            }
+            
+            // Process checkout
+            function processCheckout() {
+                if (cart.length === 0) {
+                    alert('Your cart is empty!');
+                    return;
+                }
+                
+                if (!selectedPaymentMethod) {
+                    alert('Please select a payment method.');
+                    return;
+                }
+                
+                // Validate payment details based on method
+                if (selectedPaymentMethod === 'card') {
+                    if (!validateCardDetails()) {
+                        return;
+                    }
+                }
+                
+                // Simulate payment processing
+                const orderId = 'MOM-' + Date.now().toString().slice(-8);
+                const total = calculateTotal();
+                
+                // Clear cart
+                cart = [];
+                localStorage.setItem('momentum_cart', JSON.stringify(cart));
+                
+                // Show confirmation
+                document.getElementById('confirmationMessage').textContent = 
+                    `Order #${orderId} has been confirmed. Total: $${total.toFixed(2)}`;
+                document.getElementById('confirmationModal').classList.remove('hidden');
+            }
+            
+            // Validate card details
+            function validateCardDetails() {
+                const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+                const cardExpiry = document.getElementById('cardExpiry').value;
+                const cardCvv = document.getElementById('cardCvv').value;
+                const cardName = document.getElementById('cardName').value.trim();
+                
+                if (!cardNumber || cardNumber.length < 16) {
+                    alert('Please enter a valid card number.');
+                    return false;
+                }
+                
+                if (!cardExpiry || !/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                    alert('Please enter a valid expiry date (MM/YY).');
+                    return false;
+                }
+                
+                if (!cardCvv || cardCvv.length < 3) {
+                    alert('Please enter a valid CVV.');
+                    return false;
+                }
+                
+                if (!cardName) {
+                    alert('Please enter the cardholder name.');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            // Process PayPal payment
+            function processPayPal() {
+                alert('Redirecting to PayPal...');
+                // En una implementación real, aquí se redirigiría a PayPal
+            }
+            
+            // Generate crypto invoice
+            function generateCryptoInvoice() {
+                const cryptoType = document.getElementById('cryptoType').value;
+                const total = calculateTotal();
+                
+                let rate = 1;
+                let symbol = 'BTC';
+                
+                switch(cryptoType) {
+                    case 'eth': 
+                        rate = 0.0005; // Tasa de ejemplo
+                        symbol = 'ETH';
+                        break;
+                    case 'usdc':
+                        rate = 1; // 1:1 para stablecoin
+                        symbol = 'USDC';
+                        break;
+                    default: // btc
+                        rate = 0.000025; // Tasa de ejemplo
+                        symbol = 'BTC';
+                }
+                
+                const cryptoAmount = total * rate;
+                alert(`Please send ${cryptoAmount.toFixed(8)} ${symbol} to the address shown.`);
+            }
+            
+            // Generate bank invoice
+            function generateBankInvoice() {
+                const total = calculateTotal();
+                alert(`Bank transfer invoice generated for $${total.toFixed(2)}. Please transfer within 24 hours.`);
+            }
+            
+            // Close confirmation modal
+            function closeConfirmation() {
+                document.getElementById('confirmationModal').classList.add('hidden');
+                window.location.href = "file:///C:/Users/kevin/OneDrive/Desktop/boton%20whats%20new.html";
+            }
+            
+            // Make functions global
+            window.updateQuantity = updateQuantity;
+            window.removeItem = removeItem;
+            window.applyDiscount = applyDiscount;
+            window.selectPaymentMethod = selectPaymentMethod;
+            window.processCheckout = processCheckout;
+            window.processPayPal = processPayPal;
+            window.generateCryptoInvoice = generateCryptoInvoice;
+            window.generateBankInvoice = generateBankInvoice;
+            window.closeConfirmation = closeConfirmation;
+            window.validateCardDetails = validateCardDetails;
+            
+            // Initialize cart
+            initCart();
+            
+            console.log('Cart page loaded');
+        });
+    </script>
+</body>
+</html>

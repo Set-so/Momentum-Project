@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beats - Premium Music Production | Momentum Records</title>
+    <link rel="icon" type="image/x-icon" href="assets/Momentum Records Logo.PNG">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        /* Estilos idénticos al homepage */
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .dark-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .dark-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        .category-card img {
+            filter: brightness(0.9);
+            transition: filter 0.3s ease, transform 0.5s ease;
+        }
+        
+        .category-card:hover img {
+            filter: brightness(1);
+        }
+        
+        /* Scrollbar idéntico */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        .dark-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-card:hover {
+            transform: translateY(-5px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Imagen de fondo a la izquierda (igual que homepage) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/1200x/ef/3d/2e/ef3d2e6005efc7f71ba8b396047a5f43.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @media (max-width: 1024px) {
+            body::before {
+                width: 200px;
+                opacity: 0.1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+        }
+        
+        /* ========== ESTILOS DEL NAVBAR IDÉNTICOS AL HOMEPAGE ========== */
+        .nav-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            border: 1px solid #374151;
+        }
+        
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -2rem;
+        }
+        
+        /* Estilos específicos para beats */
+        .beat-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(99, 102, 241, 0.9);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .beat-card:hover .play-button {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .genre-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .trap-tag { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .drill-tag { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.3); }
+        .lofi-tag { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+        .rnb-tag { background: rgba(236, 72, 153, 0.2); color: #f472b6; border: 1px solid rgba(236, 72, 153, 0.3); }
+        .hiphop-tag { background: rgba(249, 115, 22, 0.2); color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.3); }
+        .afro-tag { background: rgba(234, 179, 8, 0.2); color: #facc15; border: 1px solid rgba(234, 179, 8, 0.3); }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-size: 1.125rem;
+        }
+        
+        .audio-player {
+            width: 100%;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 0.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        /* ========== ANIMACIONES IDÉNTICAS AL HOMEPAGE ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        main > section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        main > section:nth-child(1) { animation-delay: 0.1s; }
+        main > section:nth-child(2) { animation-delay: 0.2s; }
+        main > section:nth-child(3) { animation-delay: 0.3s; }
+        main > section:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* Animación para el navbar al hacer scroll */
+        nav.sticky {
+            transition: all 0.3s ease;
+        }
+        
+        nav.sticky.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Animación para el contador del carrito */
+        #cartCounter {
+            transition: all 0.3s ease;
+        }
+        
+        #cartCounter:not(.hidden) {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Animación para el logo */
+        .flex.items-center.gap-3.group:hover span {
+            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%;
+            animation: gradientShift 2s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* Animación para iconos de feather */
+        i[data-feather] {
+            transition: all 0.3s ease;
+        }
+        
+        .trust-card:hover i[data-feather]:not(.ml-2) {
+            transform: rotate(360deg);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trust-card {
+                animation: cardFloatMobile 8s ease-in-out infinite;
+            }
+            
+            @keyframes cardFloatMobile {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-3px); }
+            }
+            
+            .stats-banner:hover {
+                transform: scale(1.03);
+            }
+        }
+        
+        /* ==== CAMBIO ==== */
+        /* Estilos específicos para el menú móvil */
+        #mobileMenu {
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 39;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        #mobileMenu {
+            z-index: 40;
+        }
+        
+        /* Prevenir scroll cuando el menú está abierto */
+        body.menu-open {
+            overflow: hidden;
+        }
+        /* ==== FIN CAMBIO ==== */
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <!-- Navigation Bar Personalizada - CON MENÚ RESPONSIVE -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-7">
+                <img 
+                    src="assets/Momentum Records Logo.PNG"
+                    alt="Momentum Records Logo"
+                    class="w-16 h-16 object-contain"
+                >
+                <span class="text-2xl font-bold bg-gradient-to-r from-red-800 to-pink-400 bg-clip-text text-transparent">
+                    Momentum Records
+                </span>
+            </div>
+            
+            <!-- Botón Hamburguesa (solo visible en móviles) -->
+            <button id="menuToggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Navegación con Iconos (oculto en móviles por defecto) -->
+            <div id="navMenu" class="hidden md:flex items-center gap-4">
+                <!-- Icono Home -->
+                <a href="Index.html" 
+                   class="nav-icon "
+                   title="Home">
+                    <i data-feather="home" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Home</span>
+                </a>
+                
+                <!-- Icono What's New -->
+                <a href="New Releases.html" 
+                   class="nav-icon"
+                   title="What's New">
+                    <i data-feather="star" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">New Releases</span>
+                </a>
+                
+                <!-- Icono Albums -->
+                <a href="Albums.html" 
+                   class="nav-icon"
+                   title="Albums">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Albums</span>
+                </a>
+
+                <!-- Icono Beats -->
+                <a href="Beats.html" 
+                   class="nav-icon active"
+                   title="Beats">
+                    <i data-feather="headphones" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Beats</span>
+                </a>
+                
+                <!-- Icono Cart -->
+                <a href="Shop cart.html" 
+                   class="nav-icon relative"
+                   title="Cart">
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Shopping Cart</span>
+                    <!-- Contador de carrito (opcional) -->
+                    <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- ==== CAMBIO ==== -->
+        <!-- Overlay para el menú móvil (inicialmente oculto) -->
+        <div id="menuOverlay" class="menu-overlay"></div>
+        <!-- ==== FIN CAMBIO ==== -->
+        
+        <!-- Menú móvil colapsable (slide-in desde la derecha) -->
+        <div id="mobileMenu" class="md:hidden fixed inset-y-0 right-0 w-64 bg-black/95 backdrop-blur-lg border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-40">
+            <div class="p-6">
+                <!-- Encabezado del menú móvil -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="assets/Momentum Records Logo.PNG"
+                            alt="Momentum Records Logo"
+                            class="w-8 h-8 object-contain"
+                        >
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            Menu
+                        </span>
+                    </div>
+                    <button id="closeMenu" class="text-gray-300 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Iconos en menú móvil -->
+                <div class="space-y-4">
+                    <a href="Index.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-white">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="New Releases.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="star" class="w-5 h-5"></i>
+                        <span>New Releases</span>
+                    </a>
+                    
+                    <a href="Albums.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="layers" class="w-5 h-5"></i>
+                        <span>Albums</span>
+                    </a>
+
+                    <a href="Beats.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="headphones" class="w-5 h-5"></i>
+                        <span>Beats</span>
+                    </a>
+                    
+                    <a href="Shop cart.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative">
+                        <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                        <span>Shopping Cart</span>
+                        <span id="mobileCartCounter" class="absolute left-8 -top-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+                
+                <!-- Separador -->
+                <div class="my-6 border-t border-gray-800"></div>
+                
+                <!-- Información adicional opcional -->
+                <div class="text-gray-400 text-sm">
+                    <p class="mb-2">Premium audio production since 2021</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="min-h-screen pb-20">
+        <!-- Hero Section -->
+        <section class="relative overflow-hidden py-16 md:py-24">
+            <div class="absolute inset-0 bg-gradient-to-br from-indigo-900/20 via-transparent to-purple-900/10"></div>
+            <div class="container mx-auto px-6 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                        <span class="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+                            Premium Collection
+                        </span>
+                    </h1>
+                    
+                    <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                        Discover our curated collection of professional beats. From trap to lo-fi, 
+                        find the perfect sound for your next project.
+                    </p>
+                    
+                    <!-- Filter Bar -->
+                    <div class="flex flex-wrap justify-center gap-3 mb-12">
+                        <button onclick="filterBeats('all')" class="px-5 py-2 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors">
+                            All Beats
+                        </button>
+                        <button onclick="filterBeats('trap')" class="px-5 py-2 rounded-full dark-card hover:border-red-500 font-semibold transition-colors">
+                            Trap
+                        </button>
+                        <button onclick="filterBeats('drill')" class="px-5 py-2 rounded-full dark-card hover:border-purple-500 font-semibold transition-colors">
+                            Drill
+                        </button>
+                        <button onclick="filterBeats('lofi')" class="px-5 py-2 rounded-full dark-card hover:border-green-500 font-semibold transition-colors">
+                            Lo-Fi
+                        </button>
+                        <button onclick="filterBeats('rnb')" class="px-5 py-2 rounded-full dark-card hover:border-pink-500 font-semibold transition-colors">
+                            R&B
+                        </button>
+                        <button onclick="filterBeats('hiphop')" class="px-5 py-2 rounded-full dark-card hover:border-orange-500 font-semibold transition-colors">
+                            Hip Hop
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beats Grid -->
+        <section class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Beat 1 -->
+                <div class="beat-card dark-card p-5" data-genre="trap">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" 
+                            alt="Midnight Trap Beat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(1)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="trap-tag genre-tag">Trap</span>
+                        <span class="drill-tag genre-tag">Dark</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">Midnight Shadows</h3>
+                    <p class="text-gray-400 text-sm mb-4">Dark atmospheric trap with heavy 808s and haunting melodies</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">140 BPM • C minor</span>
+                        </div>
+                        <span class="price-tag">$49.99</span>
+                    </div>
+                    
+                    <div class="audio-player hidden" id="player-1">
+                        <audio id="audio-1" preload="none">
+                            <!-- Audio source would go here -->
+                        </audio>
+                        <div class="flex items-center justify-between p-3">
+                            <button onclick="togglePlay(1)" class="text-white">
+                                <i data-feather="play" class="w-4 h-4"></i>
+                            </button>
+                            <span class="text-sm" id="time-1">0:00 / 2:30</span>
+                            <button onclick="downloadBeat(1)" class="text-indigo-400">
+                                <i data-feather="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(1)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(1)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beat 2 -->
+                <div class="beat-card dark-card p-5" data-genre="drill">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" 
+                            alt="UK Drill Beat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(2)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="drill-tag genre-tag">Drill</span>
+                        <span class="trap-tag genre-tag">Aggressive</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">London Streets</h3>
+                    <p class="text-gray-400 text-sm mb-4">Authentic UK drill with sliding 808s and dark melodies</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">142 BPM • F# minor</span>
+                        </div>
+                        <span class="price-tag">$54.99</span>
+                    </div>
+                    
+                    <div class="audio-player hidden" id="player-2">
+                        <div class="flex items-center justify-between p-3">
+                            <button onclick="togglePlay(2)" class="text-white">
+                                <i data-feather="play" class="w-4 h-4"></i>
+                            </button>
+                            <span class="text-sm" id="time-2">0:00 / 2:45</span>
+                            <button onclick="downloadBeat(2)" class="text-indigo-400">
+                                <i data-feather="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-2"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(2)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(2)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beat 3 -->
+                <div class="beat-card dark-card p-5" data-genre="lofi">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" 
+                            alt="Lo-Fi Chill Beat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(3)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="lofi-tag genre-tag">Lo-Fi</span>
+                        <span class="rnb-tag genre-tag">Chill</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">Coffee Shop Vibes</h3>
+                    <p class="text-gray-400 text-sm mb-4">Smooth lo-fi with jazzy chords and vinyl crackle</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">85 BPM • G major</span>
+                        </div>
+                        <span class="price-tag">$39.99</span>
+                    </div>
+                    
+                    <div class="audio-player hidden" id="player-3">
+                        <div class="flex items-center justify-between p-3">
+                            <button onclick="togglePlay(3)" class="text-white">
+                                <i data-feather="play" class="w-4 h-4"></i>
+                            </button>
+                            <span class="text-sm" id="time-3">0:00 / 3:15</span>
+                            <button onclick="downloadBeat(3)" class="text-indigo-400">
+                                <i data-feather="download" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-3"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(3)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(3)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beat 4 -->
+                <div class="beat-card dark-card p-5" data-genre="rnb">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/4c/9a/15/4c9a1571402cf7c3ad7265ac56ea1f2f.jpg" 
+                            alt="R&B Beat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(4)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="rnb-tag genre-tag">R&B</span>
+                        <span class="lofi-tag genre-tag">Smooth</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">Midnight Drive</h3>
+                    <p class="text-gray-400 text-sm mb-4">Smooth R&B with soulful chords and crisp drums</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">92 BPM • A minor</span>
+                        </div>
+                        <span class="price-tag">$44.99</span>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(4)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(4)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beat 5 -->
+                <div class="beat-card dark-card p-5" data-genre="hiphop">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/a2/c6/d9/a2c6d9f063b5201741b5f65902ae8e32.jpg" 
+                            alt="Boom Bap Beat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(5)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="hiphop-tag genre-tag">Boom Bap</span>
+                        <span class="trap-tag genre-tag">Classic</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">Golden Era</h3>
+                    <p class="text-gray-400 text-sm mb-4">Classic boom bap with sampled drums and jazzy loops</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">88 BPM • E minor</span>
+                        </div>
+                        <span class="price-tag">$42.99</span>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(5)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(5)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Beat 6 -->
+                <div class="beat-card dark-card p-5" data-genre="afro">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" 
+                            alt="Afrobeat"
+                            class="w-full h-48 object-cover"
+                        >
+                        <div class="play-button" onclick="playBeat(6)">
+                            <i data-feather="play" class="w-6 h-6 text-white"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <span class="afro-tag genre-tag">Afrobeat</span>
+                        <span class="rnb-tag genre-tag">Dance</span>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold mb-2">African Rhythm</h3>
+                    <p class="text-gray-400 text-sm mb-4">Vibrant afrobeat with percussive elements and groovy bass</p>
+                    
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-feather="music" class="w-4 h-4 text-gray-400"></i>
+                            <span class="text-sm text-gray-400">110 BPM • F major</span>
+                        </div>
+                        <span class="price-tag">$47.99</span>
+                    </div>
+                    
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="previewBeat(6)" class="flex-1 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold">
+                            Preview
+                        </button>
+                        <button onclick="addToCart(6)" class="flex-1 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Load More Button -->
+            <div class="text-center mt-12">
+                <button onclick="loadMoreBeats()" class="px-8 py-3 rounded-full bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 transition-all duration-300 font-semibold border border-gray-700">
+                    Load More Beats
+                </button>
+            </div>
+        </section>
+
+        <!-- Newsletter Section (Igual que homepage) -->
+        <section class="container mx-auto px-6 mt-20">
+            <div class="dark-card p-8 md:p-12 rounded-2xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Get Exclusive Beats</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Subscribe to receive new beat releases, discounts, and production tips directly in your inbox.
+                </p>
+                <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4" onsubmit="handleNewsletter(event)">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        required
+                        class="flex-grow px-6 py-3 rounded-full bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                    >
+                    <button type="submit" class="px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize feather icons
+        feather.replace();
+        
+        // ==== CAMBIO ====
+        // Código para manejar el menú hamburguesa
+        let isMenuOpen = false;
+        
+        // Elementos del menú
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const closeMenu = document.getElementById('closeMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const body = document.body;
+        
+        // Función para abrir el menú
+        function openMobileMenu() {
+            if (!isMenuOpen) {
+                // Mostrar el menú
+                mobileMenu.classList.remove('translate-x-full');
+                mobileMenu.classList.add('translate-x-0');
+                
+                // Mostrar el overlay
+                menuOverlay.classList.add('active');
+                
+                // Bloquear el scroll del body
+                body.classList.add('menu-open');
+                
+                // Actualizar estado
+                isMenuOpen = true;
+                
+                // Reemplazar iconos feather (importante para móviles)
+                feather.replace();
+            }
+        }
+        
+        // Función para cerrar el menú
+        function closeMobileMenu() {
+            if (isMenuOpen) {
+                // Ocultar el menú
+                mobileMenu.classList.remove('translate-x-0');
+                mobileMenu.classList.add('translate-x-full');
+                
+                // Ocultar el overlay
+                menuOverlay.classList.remove('active');
+                
+                // Restaurar el scroll del body
+                body.classList.remove('menu-open');
+                
+                // Actualizar estado
+                isMenuOpen = false;
+            }
+        }
+        
+        // Event listeners para el menú
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openMobileMenu);
+        }
+        
+        if (closeMenu) {
+            closeMenu.addEventListener('click', closeMobileMenu);
+        }
+        
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', closeMobileMenu);
+        }
+        
+        // Cerrar menú al presionar Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isMenuOpen) {
+                closeMobileMenu();
+            }
+        });
+        
+        // Cerrar menú al hacer clic en cualquier enlace del menú móvil
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+        // ==== FIN CAMBIO ====
+        
+        // Beat data
+        const beats = [
+            { id: 1, title: "Midnight Shadows", genre: "trap", price: 49.99, bpm: "140", key: "C minor", duration: "2:30" },
+            { id: 2, title: "London Streets", genre: "drill", price: 54.99, bpm: "142", key: "F# minor", duration: "2:45" },
+            { id: 3, title: "Coffee Shop Vibes", genre: "lofi", price: 39.99, bpm: "85", key: "G major", duration: "3:15" },
+            { id: 4, title: "Midnight Drive", genre: "rnb", price: 44.99, bpm: "92", key: "A minor", duration: "3:00" },
+            { id: 5, title: "Golden Era", genre: "hiphop", price: 42.99, bpm: "88", key: "E minor", duration: "2:50" },
+            { id: 6, title: "African Rhythm", genre: "afro", price: 47.99, bpm: "110", key: "F major", duration: "3:10" }
+        ];
+        
+        let currentAudio = null;
+        let currentBeatId = null;
+        
+        // Filter beats by genre
+        function filterBeats(genre) {
+            const beatCards = document.querySelectorAll('.beat-card');
+            const filterButtons = document.querySelectorAll('button[onclick^="filterBeats"]');
+            
+            // Update active button
+            filterButtons.forEach(btn => {
+                const btnGenre = btn.getAttribute('onclick').match(/'([^']+)'/)[1];
+                if (btnGenre === genre) {
+                    btn.classList.add('bg-indigo-600', 'text-white');
+                    btn.classList.remove('dark-card', 'text-gray-300');
+                } else {
+                    btn.classList.remove('bg-indigo-600', 'text-white');
+                    btn.classList.add('dark-card', 'text-gray-300');
+                }
+            });
+            
+            // Filter beat cards
+            beatCards.forEach(card => {
+                if (genre === 'all' || card.dataset.genre === genre) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+        
+        // Play beat preview
+        function playBeat(beatId) {
+            if (currentAudio) {
+                currentAudio.pause();
+                if (currentBeatId !== beatId) {
+                    document.getElementById(`player-${currentBeatId}`).classList.add('hidden');
+                }
+            }
+            
+            const player = document.getElementById(`player-${beatId}`);
+            player.classList.remove('hidden');
+            
+            // Simulate audio playback (in a real app, this would be actual audio)
+            simulatePlayback(beatId);
+            
+            currentBeatId = beatId;
+        }
+        
+        function togglePlay(beatId) {
+            // In a real implementation, this would control actual audio
+            alert(`Playing preview of beat ${beatId}`);
+        }
+        
+        function simulatePlayback(beatId) {
+            const beat = beats.find(b => b.id === beatId);
+            if (!beat) return;
+            
+            const progressBar = document.getElementById(`progress-${beatId}`);
+            const timeDisplay = document.getElementById(`time-${beatId}`);
+            
+            let progress = 0;
+            const totalTime = parseDuration(beat.duration);
+            
+            const interval = setInterval(() => {
+                progress += 1;
+                const percentage = (progress / totalTime) * 100;
+                progressBar.style.width = `${percentage}%`;
+                
+                // Update time display
+                const currentTime = formatTime(progress);
+                timeDisplay.textContent = `${currentTime} / ${beat.duration}`;
+                
+                if (progress >= totalTime) {
+                    clearInterval(interval);
+                    progressBar.style.width = '0%';
+                    timeDisplay.textContent = `0:00 / ${beat.duration}`;
+                }
+            }, 1000);
+        }
+        
+        function parseDuration(duration) {
+            const [minutes, seconds] = duration.split(':').map(Number);
+            return minutes * 60 + seconds;
+        }
+        
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Preview beat
+        function previewBeat(beatId) {
+            playBeat(beatId);
+        }
+        
+        // Add to cart
+        function addToCart(beatId) {
+            const beat = beats.find(b => b.id === beatId);
+            if (beat) {
+                alert(`Added "${beat.title}" to your cart for $${beat.price}`);
+            }
+        }
+        
+        // Download beat (simulated)
+        function downloadBeat(beatId) {
+            const beat = beats.find(b => b.id === beatId);
+            if (beat) {
+                alert(`Initiating download of "${beat.title}"...`);
+            }
+        }
+        
+        // Load more beats
+        function loadMoreBeats() {
+            alert('Loading more beats... (This would fetch from a server in production)');
+        }
+        
+        // Newsletter submission
+        function handleNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            if (email) {
+                alert(`Thank you! You'll receive beat updates at ${email}`);
+                event.target.reset();
+            }
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            filterBeats('all');
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

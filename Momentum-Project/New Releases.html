@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's New - Latest Releases | Momentum Records</title>
+    <link rel="icon" type="image/x-icon" href="assets/Momentum Records Logo.PNG">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        /* Estilos base (igual que homepage) */
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .dark-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .dark-card:hover {
+            transform: translateY(-5px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.2);
+        }
+        
+        .new-badge {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            animation: pulse 2s infinite;
+        }
+        
+        .coming-soon-badge {
+            background: linear-gradient(135deg, #10b981, #34d399);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Imagen de fondo (igual que homepage) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/1200x/ef/3d/2e/ef3d2e6005efc7f71ba8b396047a5f43.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @media (max-width: 1024px) {
+            body::before {
+                width: 200px;
+                opacity: 0.1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+        }
+        
+        /* ========== ESTILOS DEL NAVBAR IDÉNTICOS AL CART ========== */
+        .nav-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            border: 1px solid #374151;
+        }
+        
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -2rem;
+        }
+        
+        /* ========== ESTILOS PARA MENÚ MÓVIL ========== */
+        #mobileMenu {
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+        
+        /* Overlay para fondo cuando el menú está abierto */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animación suave para los enlaces del menú móvil */
+        #mobileMenu a {
+            transform: translateX(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        #mobileMenu.active a:nth-child(1) { transition-delay: 0.1s; }
+        #mobileMenu.active a:nth-child(2) { transition-delay: 0.15s; }
+        #mobileMenu.active a:nth-child(3) { transition-delay: 0.2s; }
+        #mobileMenu.active a:nth-child(4) { transition-delay: 0.25s; }
+        #mobileMenu.active a:nth-child(5) { transition-delay: 0.3s; }
+        
+        #mobileMenu.active a {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Asegurar que el menú móvil no se desborde en pantallas muy pequeñas */
+        @media (max-width: 640px) {
+            #mobileMenu {
+                width: 100%;
+            }
+        }
+        
+        /* Scrollbar personalizado para modo oscuro (igual que homepage) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Estilos para el carrito */
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 0.5s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .cart-notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* Modal para carrito rápido */
+        .quick-cart-modal {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: #111;
+            border-left: 1px solid #333;
+            transition: right 0.3s ease-out;
+            z-index: 1001;
+            overflow-y: auto;
+        }
+        
+        .quick-cart-modal.open {
+            right: 0;
+        }
+        
+        .cart-item {
+            border-bottom: 1px solid #333;
+            padding: 1rem 0;
+        }
+        
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #444;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #6366f1;
+        }
+        
+        /* Estilos para productos */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .price-tag {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        
+        /* Ajustes para el contador del carrito */
+        #cartCounter:not(.hidden) {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <!-- Navigation Bar Personalizada (COPIADO DEL CART) -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-7">
+                <img 
+                    src="assets/Momentum Records Logo.PNG"
+                    alt="Momentum Records Logo"
+                    class="w-16 h-16 object-contain"
+                >
+                <span class="text-2xl font-bold bg-gradient-to-r from-red-800 to-pink-400 bg-clip-text text-transparent">
+                    Momentum Records
+                </span>
+            </div>
+            
+            <!-- Botón Hamburguesa (solo visible en móviles) -->
+            <button id="menuToggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Navegación con Iconos (oculto en móviles por defecto) -->
+            <div id="navMenu" class="hidden md:flex items-center gap-4">
+                <!-- Icono Home -->
+                <a href="Index.html" 
+                   class="nav-icon"
+                   title="Home">
+                    <i data-feather="home" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Home</span>
+                </a>
+                
+                <!-- Icono What's New -->
+                <a href="New Releases.html" 
+                   class="nav-icon active"
+                   title="New Releases">
+                    <i data-feather="star" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">New Releases</span>
+                </a>
+                
+                <!-- Icono Albums -->
+                <a href="Albums.html" 
+                   class="nav-icon"
+                   title="Albums">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Albums</span>
+                </a>
+
+                <!-- Icono Beats -->
+                <a href="Beats.html" 
+                   class="nav-icon"
+                   title="Beats">
+                    <i data-feather="headphones" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Beats</span>
+                </a>
+                
+                <!-- Icono Cart -->
+                <a href="Shop cart.html" 
+                   class="nav-icon"
+                   title="Cart">
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Shopping Cart</span>
+                    <!-- Contador de carrito (opcional) -->
+                    <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Menú móvil colapsable (slide-in desde la derecha) -->
+        <div id="mobileMenu" class="md:hidden fixed inset-y-0 right-0 w-64 bg-black/95 backdrop-blur-lg border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-40">
+            <div class="p-6">
+                <!-- Encabezado del menú móvil -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="assets/Momentum Records Logo.PNG"
+                            alt="Momentum Records Logo"
+                            class="w-8 h-8 object-contain"
+                        >
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            Menu
+                        </span>
+                    </div>
+                    <button id="closeMenu" class="text-gray-300 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Iconos en menú móvil -->
+                <div class="space-y-4">
+                    <a href="Index.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Home</span>
+                    </a>
+
+                    <a href="New Releases.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-white">
+                        <i data-feather="star" class="w-5 h-5"></i>
+                        <span>New Releases</span>
+                    </a>
+
+                    <a href="Albums.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="layers" class="w-5 h-5"></i>
+                        <span>Albums</span>
+                    </a>
+
+                    <a href="Beats.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="headphones" class="w-5 h-5"></i>
+                        <span>Beats</span>
+                    </a>
+                    
+                    <a href="Shop cart.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative">
+                        <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                        <span>Shopping Cart</span>
+                        <span id="mobileCartCounter" class="absolute left-8 -top-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+                
+                <!-- Separador -->
+                <div class="my-6 border-t border-gray-800"></div>
+                
+                <!-- Información adicional opcional -->
+                <div class="text-gray-400 text-sm">
+                    <p class="mb-2">Premium audio production since 2021</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal de Carrito Rápido -->
+    <div id="quickCartModal" class="quick-cart-modal">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">Your Cart</h3>
+                <button onclick="toggleQuickCart()" class="text-gray-400 hover:text-white">
+                    <i data-feather="x" class="w-6 h-6"></i>
+                </button>
+            </div>
+            
+            <div id="cartItems" class="mb-6">
+                <!-- Los items del carrito se insertarán aquí -->
+                <div class="text-center py-8 text-gray-500">
+                    <i data-feather="shopping-cart" class="w-12 h-12 mx-auto mb-4"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-4">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Subtotal:</span>
+                    <span id="cartSubtotal" class="text-xl font-bold">$0.00</span>
+                </div>
+                
+                <div class="flex gap-3">
+                    <a href="Shop cart.html" 
+                    class="flex-1 py-3 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors text-center font-semibold">
+                        View Full Cart
+                    </a>
+                    <button onclick="checkout()" 
+                            class="flex-1 py-3 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-300 font-semibold">
+                        Checkout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificación de Carrito -->
+    <div id="cartNotification" class="cart-notification">
+        <div class="flex items-center gap-3">
+            <i data-feather="check" class="w-5 h-5"></i>
+            <span id="notificationMessage">Item added to cart!</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="min-h-screen pb-20">
+        <!-- Header Section -->
+        <section class="container mx-auto px-6 py-12">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 border border-indigo-500/30 mb-6">
+                    <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                    <span class="text-sm font-medium">Latest Releases</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-indigo-300 via-purple-300 to-pink-300 bg-clip-text text-transparent">
+                        What's New?
+                    </span>
+                </h1>
+                
+                <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+                    Discover the latest beats, lyrics, and music productions fresh from our studio.
+                    Updated weekly with exclusive content.
+                </p>
+                
+                <!-- Cart Info Banner -->
+                <div id="cartInfoBanner" class="bg-gradient-to-r from-indigo-900/30 to-purple-900/30 border border-indigo-500/30 rounded-xl p-4 mb-8 hidden">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <i data-feather="shopping-cart" class="w-5 h-5 text-indigo-400"></i>
+                            <div>
+                                <p class="font-semibold">You have <span id="cartItemCount">0</span> items in your cart</p>
+                                <p class="text-sm text-gray-400">Total: <span id="cartTotalAmount">$0.00</span></p>
+                            </div>
+                        </div>
+                        <a href="Shop cart.html" 
+                        class="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 text-sm font-semibold">
+                            Go to Cart
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-4 mb-12">
+                    <button onclick="filterContent('all')" class="px-6 py-3 rounded-full bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors">
+                        All Releases
+                    </button>
+                    <button onclick="filterContent('beats')" class="px-6 py-3 rounded-full dark-card hover:border-indigo-500 font-semibold transition-colors">
+                        Beats Only
+                    </button>
+                    <button onclick="filterContent('lyrics')" class="px-6 py-3 rounded-full dark-card hover:border-green-500 font-semibold transition-colors">
+                        Lyrics
+                    </button>
+                    <button onclick="filterContent('Merch')" class="px-6 py-3 rounded-full dark-card hover:border-pink-500 font-semibold transition-colors">
+                        Merch
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Grid -->
+        <section class="container mx-auto px-6">
+            <div class="product-grid">
+                <!-- Producto 1 -->
+                <div class="dark-card p-5 fade-in" data-category="beats">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" 
+                            alt="Dark Trap Beat"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center">
+                            <i data-feather="headphones" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Midnight Trap</h3>
+                            <p class="text-gray-400 text-sm">Producer: DarkBeats</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Dark atmospheric trap with heavy 808s and haunting melodies</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$49.99</span>
+                            <span class="text-sm text-gray-400 ml-2">MP3/WAV</span>
+                        </div>
+                        <button onclick="addToCart(1)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 2 -->
+                <div class="dark-card p-5 fade-in" data-category="lyrics">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" 
+                            alt="Love Song Lyrics"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                            <i data-feather="edit-3" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Eternal Love</h3>
+                            <p class="text-gray-400 text-sm">Writer: LyricMaster</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Romantic lyrics about everlasting love. Perfect for R&B or pop ballads.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$29.99</span>
+                            <span class="text-sm text-gray-400 ml-2">PDF/TXT</span>
+                        </div>
+                        <button onclick="addToCart(2)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 3 -->
+                <div class="dark-card p-5 fade-in" data-category="Shirt">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" 
+                            alt="Bandal T-Shirt"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="coming-soon-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                Shirt 2
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center">
+                            <i data-feather="video" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Nombre</h3>
+                            <p class="text-gray-400 text-sm">descripcion</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">tactica de venta</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$79.99</span>
+                            <span class="text-sm text-gray-400 ml-2">Video Course</span>
+                        </div>
+                        <button onclick="addToCart(3)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 4 -->
+                <div class="dark-card p-5 fade-in" data-category="beats">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/4c/9a/15/4c9a1571402cf7c3ad7265ac56ea1f2f.jpg" 
+                            alt="Lo-Fi Chill Beat"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                            <i data-feather="music" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Lo-Fi Dreams</h3>
+                            <p class="text-gray-400 text-sm">Producer: ChillWave</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Smooth lo-fi beat with vinyl crackle, piano, and laid-back drums.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$39.99</span>
+                            <span class="text-sm text-gray-400 ml-2">MP3/WAV</span>
+                        </div>
+                        <button onclick="addToCart(4)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 5 -->
+                <div class="dark-card p-5 fade-in" data-category="lyrics">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/a2/c6/d9/a2c6d9f063b5201741b5f65902ae8e32.jpg" 
+                            alt="Rap Battle Lyrics"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-yellow-500 flex items-center justify-center">
+                            <i data-feather="mic" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Battle Bars</h3>
+                            <p class="text-gray-400 text-sm">Writer: RapGod</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Aggressive rap battle lyrics with complex rhyme schemes.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$34.99</span>
+                            <span class="text-sm text-gray-400 ml-2">PDF/TXT</span>
+                        </div>
+                        <button onclick="addToCart(5)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 6 -->
+                <div class="dark-card p-5 fade-in" data-category="tutorials">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" 
+                            alt="Vocal Processing"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="coming-soon-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                TUTORIAL
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                            <i data-feather="volume-2" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Vocal Magic</h3>
+                            <p class="text-gray-400 text-sm">Instructor: VoiceMaster</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Learn professional vocal processing, tuning, and effects.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$89.99</span>
+                            <span class="text-sm text-gray-400 ml-2">Video Course</span>
+                        </div>
+                        <button onclick="addToCart(6)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 7 -->
+                <div class="dark-card p-5 fade-in" data-category="beats">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" 
+                            alt="Synthwave Beat"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center">
+                            <i data-feather="activity" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Synth Dreams</h3>
+                            <p class="text-gray-400 text-sm">Producer: RetroWave</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">80s inspired synthwave beat with arpeggiators and retro drums.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$54.99</span>
+                            <span class="text-sm text-gray-400 ml-2">MP3/WAV</span>
+                        </div>
+                        <button onclick="addToCart(7)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-700 hover:to-orange-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Producto 8 -->
+                <div class="dark-card p-5 fade-in" data-category="lyrics">
+                    <div class="relative mb-4 overflow-hidden rounded-lg">
+                        <img 
+                            src="https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" 
+                            alt="Poetry Collection"
+                            class="w-full h-48 object-cover hover:scale-105 transition-transform duration-500"
+                            loading="lazy"
+                        >
+                        <div class="absolute top-3 right-3">
+                            <span class="new-badge px-3 py-1 rounded-full text-xs font-bold text-white">
+                                NEW
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-teal-500 to-emerald-500 flex items-center justify-center">
+                            <i data-feather="book" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Urban Poetry</h3>
+                            <p class="text-gray-400 text-sm">Writer: WordSmith</p>
+                        </div>
+                    </div>
+                    
+                    <p class="text-gray-300 text-sm mb-4">Collection of urban poetry and spoken word pieces.</p>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <span class="price-tag">$24.99</span>
+                            <span class="text-sm text-gray-400 ml-2">PDF/TXT</span>
+                        </div>
+                        <button onclick="addToCart(8)" class="px-4 py-2 rounded-lg bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 transition-all duration-300 text-sm font-semibold">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter Section -->
+        <section class="container mx-auto px-6 mt-20">
+            <div class="dark-card p-8 md:p-12 rounded-2xl text-center">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Stay Updated</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">
+                    Get notified about new releases, exclusive content, and special discounts.
+                    Never miss a beat!
+                </p>
+                <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4" onsubmit="handleNewsletter(event)">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        required
+                        class="flex-grow px-6 py-3 rounded-full bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20"
+                    >
+                    <button type="submit" class="px-8 py-3 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 font-semibold whitespace-nowrap">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center gap-2 mb-2">
+        <img src="assets/Momentum Records Logo.PNG" alt="Momentum Records Logo" class="w-20 h-20">
+        <span class="text-xl font-bold">Momentum Records.</span>
+    </div>
+                    <p class="text-gray-400 text-sm flex"> Premium audio production since 2021.</p>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="instagram" class="w-5 h-5.5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+            <i data-feather="x" class="w-6 h-5.5"></i>
+        </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="youtube" class="w-6 h-5.5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <i data-feather="facebook" class="w-5 h-5.2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 Momentum Records. All rights reserved.</p>
+                <div class="mt-2">
+                    <a href="#" class="hover:text-white mx-2">Privacy Policy</a>
+                    <a href="#" class="hover:text-white mx-2">Terms of Service</a>
+                    <a href="#" class="hover:text-white mx-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Initialize feather icons
+        feather.replace();
+        
+        // Control del menú móvil (COPIADO DEL CART)
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            // Crear overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'menu-overlay';
+            document.body.appendChild(overlay);
+            
+            // Función para abrir menú
+            function openMenu() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                feather.replace();
+            }
+            
+            // Función para cerrar menú
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            menuToggle.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', closeMobileMenu);
+            
+            // Cerrar menú al hacer clic en un enlace (solo móvil)
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // Cerrar menú con tecla ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Actualizar iconos cuando se redimensione la ventana
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    closeMobileMenu();
+                }
+                feather.replace();
+            });
+            
+            // Inicializar contador del carrito
+            const cartCounter = document.getElementById('cartCounter');
+            const mobileCartCounter = document.getElementById('mobileCartCounter');
+            
+            // Función para actualizar contador
+            function updateCartCounter(count) {
+                if (count > 0) {
+                    cartCounter.textContent = count;
+                    cartCounter.classList.remove('hidden');
+                    mobileCartCounter.textContent = count;
+                    mobileCartCounter.classList.remove('hidden');
+                } else {
+                    cartCounter.classList.add('hidden');
+                    mobileCartCounter.classList.add('hidden');
+                }
+            }
+            
+            // Ejemplo: iniciar con 0 items
+            updateCartCounter(0);
+        });
+        
+        // Product data
+        const products = {
+            1: { id: 1, name: "Midnight Trap", price: 49.99, category: "beats", type: "MP3/WAV" },
+            2: { id: 2, name: "Eternal Love", price: 29.99, category: "lyrics", type: "PDF/TXT" },
+            3: { id: 3, name: "Mix Like Pro", price: 79.99, category: "tutorials", type: "Video Course" },
+            4: { id: 4, name: "Lo-Fi Dreams", price: 39.99, category: "beats", type: "MP3/WAV" },
+            5: { id: 5, name: "Battle Bars", price: 34.99, category: "lyrics", type: "PDF/TXT" },
+            6: { id: 6, name: "Vocal Magic", price: 89.99, category: "tutorials", type: "Video Course" },
+            7: { id: 7, name: "Synth Dreams", price: 54.99, category: "beats", type: "MP3/WAV" },
+            8: { id: 8, name: "Urban Poetry", price: 24.99, category: "lyrics", type: "PDF/TXT" }
+        };
+        
+        // Cart system using localStorage
+        let cart = JSON.parse(localStorage.getItem('momentum_cart')) || [];
+        
+        // Update cart display
+        function updateCartDisplay() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const subtotal = cart.reduce((sum, item) => {
+                const product = products[item.id];
+                return sum + (product.price * item.quantity);
+            }, 0);
+            
+            // Update cart count
+            document.getElementById('cartCounter').textContent = count;
+            if (count > 0) {
+                document.getElementById('cartCounter').classList.remove('hidden');
+            } else {
+                document.getElementById('cartCounter').classList.add('hidden');
+            }
+            
+            // Update mobile cart counter
+            const mobileCartCounter = document.getElementById('mobileCartCounter');
+            if (count > 0) {
+                mobileCartCounter.textContent = count;
+                mobileCartCounter.classList.remove('hidden');
+            } else {
+                mobileCartCounter.classList.add('hidden');
+            }
+            
+            // Update cart info banner
+            const banner = document.getElementById('cartInfoBanner');
+            if (count > 0) {
+                banner.classList.remove('hidden');
+                document.getElementById('cartItemCount').textContent = count;
+                document.getElementById('cartTotalAmount').textContent = `$${subtotal.toFixed(2)}`;
+            } else {
+                banner.classList.add('hidden');
+            }
+            
+            // Update quick cart modal
+            updateQuickCart();
+            
+            // Save to localStorage
+            localStorage.setItem('momentum_cart', JSON.stringify(cart));
+        }
+        
+        // Add item to cart
+        function addToCart(productId) {
+            const product = products[productId];
+            if (!product) return;
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    quantity: 1,
+                    addedAt: new Date().toISOString()
+                });
+            }
+            
+            updateCartDisplay();
+            
+            // Show notification
+            showNotification(`"${product.name}" added to cart!`);
+        }
+        
+        // Remove item from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartDisplay();
+            showNotification("Item removed from cart");
+        }
+        
+        // Update item quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity < 1) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartDisplay();
+                }
+            }
+        }
+        
+        // Update quick cart modal
+        function updateQuickCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            const subtotalElement = document.getElementById('cartSubtotal');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-8 text-gray-500">
+                        <i data-feather="shopping-cart" class="w-12 h-12 mx-auto mb-4"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                subtotalElement.textContent = '$0.00';
+            } else {
+                let itemsHTML = '';
+                let subtotal = 0;
+                
+                cart.forEach(item => {
+                    const product = products[item.id];
+                    if (product) {
+                        const itemTotal = product.price * item.quantity;
+                        subtotal += itemTotal;
+                        
+                        itemsHTML += `
+                            <div class="cart-item">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-16 h-16 rounded bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                                        <i data-feather="${getIconForCategory(product.category)}" class="w-5 h-5 text-indigo-400"></i>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="font-semibold">${product.name}</h4>
+                                        <p class="text-gray-400 text-sm">${product.type}</p>
+                                        <p class="text-indigo-300 font-bold">$${product.price.toFixed(2)}</p>
+                                    </div>
+                                    <button onclick="removeFromCart(${product.id})" class="text-gray-400 hover:text-red-400">
+                                        <i data-feather="trash-2" class="w-4 h-4"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="flex items-center justify-between mt-3">
+                                    <div class="quantity-controls">
+                                        <button onclick="updateQuantity(${product.id}, -1)" class="quantity-btn">
+                                            <i data-feather="minus" class="w-3 h-3"></i>
+                                        </button>
+                                        <span class="font-bold">${item.quantity}</span>
+                                        <button onclick="updateQuantity(${product.id}, 1)" class="quantity-btn">
+                                            <i data-feather="plus" class="w-3 h-3"></i>
+                                        </button>
+                                    </div>
+                                    <span class="font-bold">$${itemTotal.toFixed(2)}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+                
+                cartItemsContainer.innerHTML = itemsHTML;
+                subtotalElement.textContent = `$${subtotal.toFixed(2)}`;
+            }
+            
+            feather.replace();
+        }
+        
+        // Helper function for category icons
+        function getIconForCategory(category) {
+            switch(category) {
+                case 'beats': return 'headphones';
+                case 'lyrics': return 'edit-3';
+                case 'tutorials': return 'video';
+                default: return 'music';
+            }
+        }
+        
+        // Toggle quick cart modal
+        function toggleQuickCart() {
+            const modal = document.getElementById('quickCartModal');
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'cartOverlay';
+            
+            if (!modal.classList.contains('open')) {
+                // Abrir modal
+                modal.classList.add('open');
+                overlay.className = 'fixed inset-0 bg-black/50 backdrop-blur-sm z-40';
+                overlay.id = 'cartOverlay';
+                document.body.appendChild(overlay);
+                document.body.style.overflow = 'hidden';
+                
+                // Cerrar al hacer clic en overlay
+                overlay.addEventListener('click', toggleQuickCart);
+                
+                // Cerrar con tecla ESC
+                document.addEventListener('keydown', handleEscKey);
+            } else {
+                // Cerrar modal
+                modal.classList.remove('open');
+                const existingOverlay = document.getElementById('cartOverlay');
+                if (existingOverlay) {
+                    existingOverlay.remove();
+                }
+                document.body.style.overflow = '';
+                document.removeEventListener('keydown', handleEscKey);
+            }
+            
+            feather.replace();
+        }
+        
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                toggleQuickCart();
+            }
+        }
+        
+        // Checkout function
+        function checkout() {
+            if (cart.length === 0) {
+                showNotification("Your cart is empty");
+                return;
+            }
+            
+            // Simular proceso de checkout
+            showNotification("Redirecting to checkout...");
+            
+            // Guardar orden temporal
+            const order = {
+                items: cart,
+                total: cart.reduce((sum, item) => {
+                    const product = products[item.id];
+                    return sum + (product.price * item.quantity);
+                }, 0),
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('momentum_pending_order', JSON.stringify(order));
+            
+            // Redirigir después de un breve delay
+            setTimeout(() => {
+                window.location.href = "Shop checkout.html";
+            }, 1500);
+        }
+        
+        // Filter content function
+        function filterContent(category) {
+            const products = document.querySelectorAll('[data-category]');
+            
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+            
+            // Update active button
+            document.querySelectorAll('button[onclick^="filterContent"]').forEach(btn => {
+                if (btn.textContent.includes(category.charAt(0).toUpperCase() + category.slice(1)) || 
+                    (category === 'all' && btn.textContent.includes('All Releases'))) {
+                    btn.classList.add('bg-indigo-600', 'text-white');
+                    btn.classList.remove('dark-card');
+                } else {
+                    btn.classList.remove('bg-indigo-600', 'text-white');
+                    btn.classList.add('dark-card');
+                }
+            });
+        }
+        
+        // Newsletter function
+        function handleNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            if (email) {
+                alert(`Thank you! You'll receive updates at ${email}`);
+                event.target.reset();
+            }
+        }
+        
+        // Show notification
+        function showNotification(message) {
+            const notification = document.getElementById('cartNotification');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            messageEl.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateCartDisplay();
+            feather.replace();
+        });
+    </script>
+</body>
+</html>

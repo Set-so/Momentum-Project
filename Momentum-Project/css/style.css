@@ -1,0 +1,489 @@
+        .dark-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .dark-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Mejorar visibilidad de imágenes en fondo oscuro */
+        .category-card img {
+            filter: brightness(0.9);
+            transition: filter 0.3s ease, transform 0.5s ease;
+        }
+        
+        .category-card:hover img {
+            filter: brightness(1);
+        }
+        
+        /* Scrollbar personalizado para modo oscuro */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Estilo para dark-card (si lo necesitas) */
+        .dark-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        
+        /* ========== ESTILOS DEL NAVBAR IDÉNTICOS ========== */
+        .nav-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            border: 1px solid #374151;
+        }
+        
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -2rem;
+        }
+        
+        /* ========== ESTILOS PARA MENÚ MÓVIL ========== */
+        #mobileMenu {
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+        
+        /* Overlay para fondo cuando el menú está abierto */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animación suave para los enlaces del menú móvil */
+        #mobileMenu a {
+            transform: translateX(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        #mobileMenu.active a:nth-child(1) { transition-delay: 0.1s; }
+        #mobileMenu.active a:nth-child(2) { transition-delay: 0.15s; }
+        #mobileMenu.active a:nth-child(3) { transition-delay: 0.2s; }
+        #mobileMenu.active a:nth-child(4) { transition-delay: 0.25s; }
+        #mobileMenu.active a:nth-child(5) { transition-delay: 0.3s; }
+        
+        #mobileMenu.active a {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Asegurar que el menú móvil no se desborde en pantallas muy pequeñas */
+        @media (max-width: 640px) {
+            #mobileMenu {
+                width: 100%;
+            }
+        }
+        
+        /* Imagen de fondo a la izquierda */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/1200x/ef/3d/2e/ef3d2e6005efc7f71ba8b396047a5f43.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @media (max-width: 1024px) {
+            body::before {
+                width: 200px;
+                opacity: 0.1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+        }
+        /* ========== ANIMACIONES PERSONALIZADAS ========== */
+        
+        /* 1. Animaciones para Trust Cards */
+        .trust-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+        
+        .trust-card:nth-child(1) { animation-delay: 0s; }
+        .trust-card:nth-child(2) { animation-delay: 0.5s; }
+        .trust-card:nth-child(3) { animation-delay: 1s; }
+        .trust-card:nth-child(4) { animation-delay: 1.5s; }
+        
+        .trust-card:hover {
+            animation-play-state: paused;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* 2. Animaciones para Stats Banners */
+        .stats-banner {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .stats-banner:hover::before {
+            left: 100%;
+        }
+        
+        .stats-banner:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 3. Animación para números en Stats Banners */
+        .stats-banner .text-5xl {
+            transition: all 0.5s ease;
+        }
+        
+        .stats-banner:hover .text-5xl {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        /* 4. Animación para iconos dentro de Trust Cards */
+        .trust-card .w-14 {
+            transition: all 0.4s ease;
+        }
+        
+        .trust-card:hover .w-14 {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        /* 5. Animación para el borde inferior de Trust Cards */
+        .trust-card .absolute.bottom-0 {
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* 6. Animación para badges dentro de Trust Cards */
+        .trust-card .flex.items-center.text-sm span {
+            transition: all 0.3s ease;
+        }
+        
+        .trust-card:hover .flex.items-center.text-sm span {
+            letter-spacing: 0.5px;
+        }
+        
+        /* 7. Animación para las imágenes de categorías */
+        .category-card img {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .category-card:hover img {
+            filter: brightness(1.1) saturate(1.2);
+            transform: scale(1.08);
+        }
+        
+        /* 8. Animación para el overlay de categorías */
+        .category-card .absolute.inset-0 {
+            transition: all 0.5s ease;
+        }
+        
+        .category-card:hover .absolute.inset-0 {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+        }
+        
+        /* 9. Animación para los títulos de categorías */
+        .category-card h3 {
+            transition: all 0.4s ease;
+        }
+        
+        .category-card:hover h3 {
+            transform: translateY(-5px);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 10. Animación para el botón "Check what's new" */
+        a[href*="whats new"] {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        a[href*="whats new"]::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        a[href*="whats new"]:hover::after {
+            left: 100%;
+        }
+        
+        a[href*="whats new"]:hover {
+            transform: translateX(5px);
+        }
+        
+        /* 11. Animación para las logos de plataformas */
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div {
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 0.4s ease;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div:hover::before {
+            width: 100%;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div:hover {
+            transform: translateY(-3px);
+            opacity: 1 !important;
+        }
+        
+        /* 12. Animación para el newsletter card */
+        .dark-card.p-8 {
+            transition: all 0.5s ease;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(30, 30, 30, 0.9)) !important;
+        }
+        
+        .dark-card.p-8:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(30, 30, 30, 1)) !important;
+        }
+        
+        /* 13. Animación para el input del newsletter */
+        .dark-card.p-8 input[type="email"] {
+            transition: all 0.4s ease;
+        }
+        
+        .dark-card.p-8:hover input[type="email"] {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 14. Animación para el botón de subscribe */
+        .dark-card.p-8 button[type="submit"] {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-card.p-8 button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .dark-card.p-8 button[type="submit"]:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .dark-card.p-8 button[type="submit"]:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 15. Animación de carga para toda la página */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        main > section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        main > section:nth-child(1) { animation-delay: 0.1s; }
+        main > section:nth-child(2) { animation-delay: 0.2s; }
+        main > section:nth-child(3) { animation-delay: 0.3s; }
+        main > section:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* 16. Animación para el navbar al hacer scroll */
+        nav.sticky {
+            transition: all 0.3s ease;
+        }
+        
+        nav.sticky.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 17. Animación para el contador del carrito */
+        #cartCounter {
+            transition: all 0.3s ease;
+        }
+        
+        #cartCounter:not(.hidden) {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 18. Animación para el logo */
+        .flex.items-center.gap-3.group:hover span {
+            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%;
+            animation: gradientShift 2s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* 19. Animación para los círculos de fondo en Trust Cards */
+        .trust-card .absolute.top-0.right-0 {
+            transition: all 0.8s ease;
+        }
+        
+        .trust-card:hover .absolute.top-0.right-0 {
+            transform: translate(-8px, -8px) scale(1.1);
+        }
+        
+        /* 20. Animación para los iconos de feather */
+        i[data-feather] {
+            transition: all 0.3s ease;
+        }
+        
+        .trust-card:hover i[data-feather]:not(.ml-2) {
+            transform: rotate(360deg);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trust-card {
+                animation: cardFloatMobile 8s ease-in-out infinite;
+            }
+            
+            @keyframes cardFloatMobile {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-3px); }
+            }
+            
+            .stats-banner:hover {
+                transform: scale(1.03);
+            }
+        }

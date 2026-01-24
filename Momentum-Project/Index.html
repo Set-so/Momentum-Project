@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Momentum Records. </title>
+    <link rel="icon" type="image/png" sizes="128x128" href="assets/Momentum Records Logo.PNG">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <!-- Componentes de la WebPage -->
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="components/product-card.js"></script>
+    
+    <!-- Estilos adicionales para modo oscuro -->
+    <style>
+        /* Asegurar contraste óptimo en modo oscuo */
+        .dark-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .dark-input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Mejorar visibilidad de imágenes en fondo oscuro */
+        .category-card img {
+            filter: brightness(0.9);
+            transition: filter 0.3s ease, transform 0.5s ease;
+        }
+        
+        .category-card:hover img {
+            filter: brightness(1);
+        }
+        
+         /* Scrollbar personalizado para modo oscuro (igual que homepage) */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 5px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        
+        /* Estilo para dark-card (si lo necesitas) */
+        .dark-card {
+            background: rgba(30, 30, 30, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        
+        /* ========== ESTILOS DEL NAVBAR IDÉNTICOS ========== */
+        .nav-icon {
+            position: relative;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-icon:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+        
+        .nav-icon.active {
+            background: rgba(99, 102, 241, 0.2);
+            color: #818cf8;
+        }
+        
+        .nav-tooltip {
+            position: absolute;
+            bottom: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s ease;
+            z-index: 50;
+            border: 1px solid #374151;
+        }
+        
+        .nav-icon:hover .nav-tooltip {
+            opacity: 1;
+            visibility: visible;
+            bottom: -2rem;
+        }
+        
+        /* ========== ESTILOS PARA MENÚ MÓVIL ========== */
+        #mobileMenu {
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        #mobileMenu.active {
+            transform: translateX(0);
+        }
+        
+        /* Overlay para fondo cuando el menú está abierto */
+        .menu-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 30;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        /* Animación suave para los enlaces del menú móvil */
+        #mobileMenu a {
+            transform: translateX(10px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        #mobileMenu.active a:nth-child(1) { transition-delay: 0.1s; }
+        #mobileMenu.active a:nth-child(2) { transition-delay: 0.15s; }
+        #mobileMenu.active a:nth-child(3) { transition-delay: 0.2s; }
+        #mobileMenu.active a:nth-child(4) { transition-delay: 0.25s; }
+        #mobileMenu.active a:nth-child(5) { transition-delay: 0.3s; }
+        
+        #mobileMenu.active a {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        
+        /* Asegurar que el menú móvil no se desborde en pantallas muy pequeñas */
+        @media (max-width: 640px) {
+            #mobileMenu {
+                width: 100%;
+            }
+        }
+        
+        /* Imagen de fondo a la izquierda */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 300px;
+            height: 100vh;
+            background-image: url('https://i.pinimg.com/1200x/ef/3d/2e/ef3d2e6005efc7f71ba8b396047a5f43.jpg');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: -1;
+            opacity: 0.15;
+        }
+        
+        @media (max-width: 1024px) {
+            body::before {
+                width: 200px;
+                opacity: 0.1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body::before {
+                display: none;
+            }
+        }
+        /* ========== ANIMACIONES PERSONALIZADAS ========== */
+        
+        /* 1. Animaciones para Trust Cards */
+        .trust-card {
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(0);
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+        
+        .trust-card:nth-child(1) { animation-delay: 0s; }
+        .trust-card:nth-child(2) { animation-delay: 0.5s; }
+        .trust-card:nth-child(3) { animation-delay: 1s; }
+        .trust-card:nth-child(4) { animation-delay: 1.5s; }
+        
+        .trust-card:hover {
+            animation-play-state: paused;
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        }
+        
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* 2. Animaciones para Stats Banners */
+        .stats-banner {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .stats-banner:hover::before {
+            left: 100%;
+        }
+        
+        .stats-banner:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 3. Animación para números en Stats Banners */
+        .stats-banner .text-5xl {
+            transition: all 0.5s ease;
+        }
+        
+        .stats-banner:hover .text-5xl {
+            transform: scale(1.1);
+            text-shadow: 0 0 20px currentColor;
+        }
+        
+        /* 4. Animación para iconos dentro de Trust Cards */
+        .trust-card .w-14 {
+            transition: all 0.4s ease;
+        }
+        
+        .trust-card:hover .w-14 {
+            transform: rotate(10deg) scale(1.1);
+        }
+        
+        /* 5. Animación para el borde inferior de Trust Cards */
+        .trust-card .absolute.bottom-0 {
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        /* 6. Animación para badges dentro de Trust Cards */
+        .trust-card .flex.items-center.text-sm span {
+            transition: all 0.3s ease;
+        }
+        
+        .trust-card:hover .flex.items-center.text-sm span {
+            letter-spacing: 0.5px;
+        }
+        
+        /* 7. Animación para las imágenes de categorías */
+        .category-card img {
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .category-card:hover img {
+            filter: brightness(1.1) saturate(1.2);
+            transform: scale(1.08);
+        }
+        
+        /* 8. Animación para el overlay de categorías */
+        .category-card .absolute.inset-0 {
+            transition: all 0.5s ease;
+        }
+        
+        .category-card:hover .absolute.inset-0 {
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4));
+        }
+        
+        /* 9. Animación para los títulos de categorías */
+        .category-card h3 {
+            transition: all 0.4s ease;
+        }
+        
+        .category-card:hover h3 {
+            transform: translateY(-5px);
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 10. Animación para el botón "Check what's new" */
+        a[href*="whats new"] {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        a[href*="whats new"]::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        a[href*="whats new"]:hover::after {
+            left: 100%;
+        }
+        
+        a[href*="whats new"]:hover {
+            transform: translateX(5px);
+        }
+        
+        /* 11. Animación para las logos de plataformas */
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div {
+            transition: all 0.4s ease;
+            position: relative;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            transition: width 0.4s ease;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div:hover::before {
+            width: 100%;
+        }
+        
+        .flex.flex-wrap.justify-center.items-center.gap-8 > div:hover {
+            transform: translateY(-3px);
+            opacity: 1 !important;
+        }
+        
+        /* 12. Animación para el newsletter card */
+        .dark-card.p-8 {
+            transition: all 0.5s ease;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.8), rgba(30, 30, 30, 0.9)) !important;
+        }
+        
+        .dark-card.p-8:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.9), rgba(30, 30, 30, 1)) !important;
+        }
+        
+        /* 13. Animación para el input del newsletter */
+        .dark-card.p-8 input[type="email"] {
+            transition: all 0.4s ease;
+        }
+        
+        .dark-card.p-8:hover input[type="email"] {
+            border-color: rgba(99, 102, 241, 0.5);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* 14. Animación para el botón de subscribe */
+        .dark-card.p-8 button[type="submit"] {
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-card.p-8 button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .dark-card.p-8 button[type="submit"]:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .dark-card.p-8 button[type="submit"]:hover {
+            transform: scale(1.05);
+        }
+        
+        /* 15. Animación de carga para toda la página */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        main > section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        main > section:nth-child(1) { animation-delay: 0.1s; }
+        main > section:nth-child(2) { animation-delay: 0.2s; }
+        main > section:nth-child(3) { animation-delay: 0.3s; }
+        main > section:nth-child(4) { animation-delay: 0.4s; }
+        
+        /* 16. Animación para el navbar al hacer scroll */
+        nav.sticky {
+            transition: all 0.3s ease;
+        }
+        
+        nav.sticky.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* 17. Animación para el contador del carrito */
+        #cartCounter {
+            transition: all 0.3s ease;
+        }
+        
+        #cartCounter:not(.hidden) {
+            animation: bounceIn 0.5s ease;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        /* 18. Animación para el logo */
+        .flex.items-center.gap-3.group:hover span {
+            background: linear-gradient(90deg, #818cf8, #c084fc, #f472b6);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% 100%;
+            animation: gradientShift 2s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        
+        /* 19. Animación para los círculos de fondo en Trust Cards */
+        .trust-card .absolute.top-0.right-0 {
+            transition: all 0.8s ease;
+        }
+        
+        .trust-card:hover .absolute.top-0.right-0 {
+            transform: translate(-8px, -8px) scale(1.1);
+        }
+        
+        /* 20. Animación para los iconos de feather */
+        i[data-feather] {
+            transition: all 0.3s ease;
+        }
+        
+        .trust-card:hover i[data-feather]:not(.ml-2) {
+            transform: rotate(360deg);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .trust-card {
+                animation: cardFloatMobile 8s ease-in-out infinite;
+            }
+            
+            @keyframes cardFloatMobile {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-3px); }
+            }
+            
+            .stats-banner:hover {
+                transform: scale(1.03);
+            }
+        }        
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <!-- Navigation Bar Personalizada - CON MENÚ RESPONSIVE -->
+    <nav class="sticky top-0 z-50 bg-black/95 backdrop-blur-lg border-b border-gray-800">
+        <div class="container mx-auto px-6 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center gap-7">
+                <img 
+                    src="assets/Momentum Records Logo.PNG"
+                    alt="Momentum Records Logo"
+                    class="w-16 h-16 object-contain"
+                >
+                <span class="text-2xl font-bold bg-gradient-to-r from-red-800 to-pink-400 bg-clip-text text-transparent">
+                    Momentum Records
+                </span>
+            </div>
+            
+            <!-- Botón Hamburguesa (solo visible en móviles) -->
+            <button id="menuToggle" class="md:hidden text-gray-300 hover:text-white focus:outline-none">
+                <i data-feather="menu" class="w-6 h-6"></i>
+            </button>
+            
+            <!-- Navegación con Iconos (oculto en móviles por defecto) -->
+            <div id="navMenu" class="hidden md:flex items-center gap-4">
+                <!-- Icono Home (ACTIVO EN ESTA PÁGINA) -->
+                <a href="" 
+                   class="nav-icon active"
+                   title="Home">
+                    <i data-feather="home" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Home</span>
+                </a>
+                
+                <!-- Icono What's New -->
+                <a href="New Releases.html" 
+                   class="nav-icon"
+                   title="New Releases">
+                    <i data-feather="star" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">New Releases</span>
+                </a>
+                
+                <!-- Icono Albums -->
+                <a href="Albums.html" 
+                   class="nav-icon"
+                   title="Albums">
+                    <i data-feather="layers" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Albums</span>
+                </a>
+
+                <!-- Icono Beats -->
+                <a href="Beats.html" 
+                   class="nav-icon"
+                   title="Beats">
+                    <i data-feather="headphones" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Beats</span>
+                </a>
+                
+                <!-- Icono Cart -->
+                <a href="Shop cart.html" 
+                   class="nav-icon relative"
+                   title="Cart">
+                    <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Shopping Cart</span>
+                    <!-- Contador de carrito (opcional) -->
+                    <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Menú móvil colapsable (slide-in desde la derecha) -->
+        <div id="mobileMenu" class="md:hidden fixed inset-y-0 right-0 w-64 bg-black/95 backdrop-blur-lg border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-40">
+            <div class="p-6">
+                <!-- Encabezado del menú móvil -->
+                <div class="flex justify-between items-center mb-8">
+                    <div class="flex items-center gap-3">
+                        <img 
+                            src="C:\Users\kevin\OneDrive\Desktop\Momentum\logo transparente.png"
+                            alt="Momentum Records Logo"
+                            class="w-8 h-8 object-contain"
+                        >
+                        <span class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                            Menu
+                        </span>
+                    </div>
+                    <button id="closeMenu" class="text-gray-300 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Iconos en menú móvil -->
+                <div class="space-y-4">
+                    <a href="Index.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-white">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Home</span>
+                    </a>
+                    
+                    <a href="New Releases.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="star" class="w-5 h-5"></i>
+                        <span>New Releases</span>
+                    </a>
+                    
+                    <a href="Albums.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="layers" class="w-5 h-5"></i>
+                        <span>Albums</span>
+                    </a>
+
+                    <a href="Beats.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="headphones" class="w-5 h-5"></i>
+                        <span>Beats</span>
+                    </a>
+                    
+                    <a href="Shop cart.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative">
+                        <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                        <span>Shopping Cart</span>
+                        <span id="mobileCartCounter" class="absolute left-8 -top-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                    </a>
+                </div>
+                
+                <!-- Separador -->
+                <div class="my-6 border-t border-gray-800"></div>
+                
+                <!-- Información adicional opcional -->
+                <div class="text-gray-400 text-sm">
+                    <p class="mb-2">Premium audio production since 2021</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+                
+        <!-- CATEGORIAS -->
+        <section class="container mx-auto px-4 md:px-8 py-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Whatever, <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Whenever.</span></h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <a href="file:///C:/Users/kevin/OneDrive/Desktop/beats%20section.html" class="category-card group">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
+                        <img src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" alt="Streetwear" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Beats</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="/categories/tech.html" class="category-card group">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
+                        <img src="https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" alt="Tech Gear" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Lyrics</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="/categories/lifestyle.html" class="category-card group">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
+                        <img src="https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" alt="Lifestyle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Audio Engineering</h3>
+                        </div>
+                    </div>
+                </a>
+                <a href="/categories/accessories.html" class="category-card group">
+                    <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
+                        <img src="https://i.pinimg.com/1200x/4c/9a/15/4c9a1571402cf7c3ad7265ac56ea1f2f.jpg" alt="Accessories" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
+                            <h3 class="text-2xl font-bold text-white">Merch</h3>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+    
+
+    <!-- Trust & Credibility Banners -->
+<section class="container mx-auto px-4 md:px-8 py-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+        Why Trust <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Momentum?</span>
+    </h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Banner 1: Premium Quality -->
+        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-indigo-500 transition-all duration-500 p-6">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+            
+            <div class="relative z-10">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-4">
+                    <i data-feather="award" class="w-7 h-7 text-white"></i>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-3">Premium Quality</h3>
+                <p class="text-gray-400 mb-4">Studio-grade beats mixed & mastered by professionals with industry-standard equipment</p>
+                
+                <div class="flex items-center text-sm text-indigo-300">
+                    <span>100% Satisfaction</span>
+                    <i data-feather="check-circle" class="w-4 h-4 ml-2"></i>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        </div>
+
+        <!-- Banner 2: Instant Delivery -->
+        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-green-500 transition-all duration-500 p-6">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+            
+            <div class="relative z-10">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4">
+                    <i data-feather="zap" class="w-7 h-7 text-white"></i>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-3">Instant Delivery</h3>
+                <p class="text-gray-400 mb-4">Download your purchased beats immediately after payment. No waiting, no delays</p>
+                
+                <div class="flex items-center text-sm text-green-300">
+                    <span>24/7 Access</span>
+                    <i data-feather="clock" class="w-4 h-4 ml-2"></i>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        </div>
+
+        <!-- Banner 3: Secure Payments -->
+        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-blue-500 transition-all duration-500 p-6">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+            
+            <div class="relative z-10">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4">
+                    <i data-feather="shield" class="w-7 h-7 text-white"></i>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-3">Secure Payments</h3>
+                <p class="text-gray-400 mb-4">SSL encrypted transactions with multiple payment options. Your security is our priority</p>
+                
+                <div class="flex items-center text-sm text-blue-300">
+                    <span>Bank-Level Security</span>
+                    <i data-feather="lock" class="w-4 h-4 ml-2"></i>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        </div>
+
+        <!-- Banner 4: Artist Support -->
+        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-pink-500 transition-all duration-500 p-6">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-500/10 to-rose-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+            
+            <div class="relative z-10">
+                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-4">
+                    <i data-feather="headphones" class="w-7 h-7 text-white"></i>
+                </div>
+                
+                <h3 class="text-xl font-bold text-white mb-3">Artist Support</h3>
+                <p class="text-gray-400 mb-4">Dedicated support team & free mixing consultation with every purchase</p>
+                
+                <div class="flex items-center text-sm text-pink-300">
+                    <span>1-on-1 Assistance</span>
+                    <i data-feather="message-circle" class="w-4 h-4 ml-2"></i>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Proof Banners -->
+<section class="container mx-auto px-4 md:px-8 py-12">
+    <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4">
+        Best coverage for <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Artists Worldwide</span>
+    </h2>
+    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">Join thousands of successful artists who launched their careers with Momentum Productions</p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Banner 1: Numbers -->
+        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900/30 to-purple-900/30 border border-indigo-500/20 p-6">
+            <div class="text-center">
+                <div class="text-5xl font-bold bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-2">
+                    1K+
+                </div>
+                <div class="text-gray-300 font-semibold mb-2">Beats Sold</div>
+                <div class="text-sm text-gray-400">To artists in 14+ countries</div>
+                
+                <div class="mt-4 flex justify-center">
+                    <div class="flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 border-2 border-black"></div>
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 border-2 border-black"></div>
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 border-2 border-black"></div>
+                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 border-2 border-black"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner 2: Charts -->
+        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/20 p-6">
+            <div class="text-center">
+                <div class="text-5xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent mb-2">
+                    50+
+                </div>
+                <div class="text-gray-300 font-semibold mb-2">Charting Songs</div>
+                <div class="text-sm text-gray-400">Created with our beats worldwide</div>
+                
+                <div class="mt-6">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">
+                        <i data-feather="trending-up" class="w-4 h-4 mr-2"></i>
+                        Spotify Charts
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner 3: Industry -->
+        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border border-blue-500/20 p-6">
+            <div class="text-center">
+                <div class="text-5xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent mb-2">
+                    5+ Years
+                </div>
+                <div class="text-gray-300 font-semibold mb-2">Industry Experience</div>
+                <div class="text-sm text-gray-400">Professional audio engineering</div>
+                
+                <div class="mt-4">
+                    <div class="flex justify-center items-center space-x-2">
+                        <div class="w-6 h-6">
+                            <i data-feather="music" class="w-full h-full text-blue-400"></i>
+                        </div>
+                        <div class="w-6 h-6">
+                            <i data-feather="mic" class="w-full h-full text-blue-400"></i>
+                        </div>
+                        <div class="w-6 h-6">
+                            <i data-feather="volume-2" class="w-full h-full text-blue-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Banner 4: Guarantee -->
+        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-500/20 p-6">
+            <div class="text-center">
+                <div class="text-5xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent mb-2">
+                    30-Day
+                </div>
+                <div class="text-gray-300 font-semibold mb-2">Money Back Guarantee</div>
+                <div class="text-sm text-gray-400">If you're not 100% satisfied</div>
+                
+                <div class="mt-4">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-sm">
+                        <i data-feather="shield" class="w-4 h-4 mr-2"></i>
+                        Risk-Free Purchase
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Client Logos -->
+    <div class="mt-12 pt-8 border-t border-gray-800">
+        <p class="text-gray-400 text-center mb-6"></p>
+        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70">
+            <div class="text-gray-300 font-bold text-xl">SPOTIFY</div>
+            <div class="text-gray-300 font-bold text-xl">APPLE MUSIC</div>
+            <div class="text-gray-300 font-bold text-xl">TIDAL</div>
+            <div class="text-gray-300 font-bold text-xl">SOUNDCLOUD</div>
+            <div class="text-gray-300 font-bold text-xl">BEATSTARS</div>
+        </div>
+    </div>
+</section>
+        <!-- Newsletter - SIMPLIFICADA Y FUNCIONAL -->
+        <section class="container mx-auto px-4 py-12 fade-in-up">
+            <div class="dark-card p-6 rounded-xl text-center max-w-2xl mx-auto">
+                <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
+                <p class="text-gray-300 mb-6">
+                    Get notified about new releases, exclusive content, and special discounts.
+                </p>
+                <form id="newsletterForm" class="flex flex-col sm:flex-row gap-3">
+                    <input 
+                        type="email" 
+                        placeholder="Enter your email" 
+                        required
+                        class="flex-grow px-4 py-3 rounded-lg bg-gray-900 border border-gray-700 text-white"
+                    >
+                    <button type="submit" class="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 font-semibold">
+                        Subscribe
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+     <!-- Footer -->
+    <footer class="bg-gray-900 border-t border-gray-800 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center gap-1 mb-2">
+    <img src="assets/Momentum Records Logo.PNG" alt="Momentum Records Logo" class="w-20 h-20">
+    <span class="text-xl font-bold">Momentum Records.</span>
+</div>
+            
+                     <p class="text-gray-400 text-center"> Premium audio production since 2021.</p>
+                </div>
+                
+                <div class="flex gap-4">
+                    <a href="#" class="text-gray-400 text-center hover:text-white">
+                        <i data-feather="instagram" class="w-5 h-5.5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 text-center hover:text-white">
+        <i data-feather="x" class="w-6 h-5.5"></i>
+    </a>
+                    <a href="#" class="text-gray-400 text-center hover:text-white">
+                        <i data-feather="youtube" class="w-6 h-5.5"></i>
+                    </a>
+                    <a href="#" class="text-gray-400  text-center hover:text-white">
+                        <i data-feather="facebook" class="w-5 h-5.2"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-6 pt-6 text-center text-gray-400 text-sm">
+                <p>&copy; 2026 Momentum Records. All rights reserved.</p>
+                <div class="mt-2">
+                    <a href="#" class="hover:text-white mx-2">Privacy Policy</a>
+                    <a href="#" class="hover:text-white mx-2">Terms of Service</a>
+                    <a href="#" class="hover:text-white mx-2">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script>
+        // Inicializar Feather Icons
+        feather.replace();
+        
+        // Control del menú móvil
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const closeMenu = document.getElementById('closeMenu');
+            const mobileMenu = document.getElementById('mobileMenu');
+            
+            // Crear overlay
+            const overlay = document.createElement('div');
+            overlay.className = 'menu-overlay';
+            document.body.appendChild(overlay);
+            
+            // Función para abrir menú
+            function openMenu() {
+                mobileMenu.classList.add('active');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                feather.replace();
+            }
+            
+            // Función para cerrar menú
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            menuToggle.addEventListener('click', openMenu);
+            closeMenu.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', closeMobileMenu);
+            
+            // Cerrar menú al hacer clic en un enlace (solo móvil)
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // Cerrar menú con tecla ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && mobileMenu.classList.contains('active')) {
+                    closeMobileMenu();
+                }
+            });
+            
+            // Actualizar iconos cuando se redimensione la ventana
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) {
+                    closeMobileMenu();
+                }
+                feather.replace();
+            });
+            
+            // Inicializar contador del carrito
+            const cartCounter = document.getElementById('cartCounter');
+            const mobileCartCounter = document.getElementById('mobileCartCounter');
+            
+            // Función para actualizar contador
+            function updateCartCounter(count) {
+                if (count > 0) {
+                    cartCounter.textContent = count;
+                    cartCounter.classList.remove('hidden');
+                    mobileCartCounter.textContent = count;
+                    mobileCartCounter.classList.remove('hidden');
+                } else {
+                    cartCounter.classList.add('hidden');
+                    mobileCartCounter.classList.add('hidden');
+                }
+            }
+            
+            // Ejemplo: iniciar con 0 items
+            updateCartCounter(0);
+            
+            // Función para manejar newsletter
+            function handleNewsletter(event) {
+                event.preventDefault();
+                const email = event.target.querySelector('input[type="email"]').value;
+                if(email) {
+                    alert(`Thanks for subscribing with ${email}! Check your inbox for updates.`);
+                    event.target.reset();
+                }
+            }
+            
+            // Initialize components
+            console.log('Momentum Records loaded');
+        });
+    </script>
+
+</body>
+</html>
