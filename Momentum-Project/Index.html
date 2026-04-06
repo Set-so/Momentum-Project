@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Momentum Records. </title>
+    <title>Momentum Records.</title>
     <link rel="icon" type="image/png" sizes="128x128" href="assets/Momentum Records Logo.PNG">
 
     <link rel="stylesheet" href="style.css">
@@ -32,16 +32,6 @@
             outline: none;
             border-color: rgba(255, 255, 255, 0.4);
             box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
-        }
-        
-        /* Mejorar visibilidad de imágenes en fondo oscuro */
-        .category-card img {
-            filter: brightness(0.9);
-            transition: filter 0.3s ease, transform 0.5s ease;
-        }
-        
-        .category-card:hover img {
-            filter: brightness(1);
         }
         
          /* Scrollbar personalizado para modo oscuro (igual que homepage) */
@@ -180,7 +170,7 @@
             background-position: center center;
             background-repeat: no-repeat;
             z-index: -1;
-            opacity: 0.15;
+            opacity: 0.4;
         }
         
         @media (max-width: 1024px) {
@@ -195,8 +185,52 @@
                 display: none;
             }
         }
-        /* ========== ANIMACIONES PERSONALIZADAS ========== */
         
+        /* ========== ESTILOS PARA EL CARRITO SIDEBAR ========== */
+        .cart-sidebar {
+            transition: transform 0.3s ease;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+        }
+        
+        .cart-item-remove {
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item-remove:hover {
+            transform: scale(1.1);
+            color: #ef4444;
+        }
+        
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            border-color: #818cf8;
+            background: rgba(129, 140, 248, 0.1);
+        }
+        
+        /* ========== ANIMACIONES PERSONALIZADAS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        main > section {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        main > section:nth-child(1) { animation-delay: 0.1s; }
+        main > section:nth-child(2) { animation-delay: 0.2s; }
+        main > section:nth-child(3) { animation-delay: 0.3s; }
+        main > section:nth-child(4) { animation-delay: 0.4s; }
+
         /* 1. Animaciones para Trust Cards */
         .trust-card {
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -307,32 +341,6 @@
         .category-card:hover h3 {
             transform: translateY(-5px);
             text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-        
-        /* 10. Animación para el botón "Check what's new" */
-        a[href*="whats new"] {
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        a[href*="whats new"]::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            transition: left 0.7s ease;
-        }
-        
-        a[href*="whats new"]:hover::after {
-            left: 100%;
-        }
-        
-        a[href*="whats new"]:hover {
-            transform: translateX(5px);
         }
         
         /* 11. Animación para las logos de plataformas */
@@ -506,6 +514,11 @@
             .stats-banner:hover {
                 transform: scale(1.03);
             }
+            
+            /* Ajustes para el carrito en móvil */
+            .cart-sidebar {
+                width: 100%;
+            }
         }        
     </style>
 </head>
@@ -533,7 +546,7 @@
             <!-- Navegación con Iconos (oculto en móviles por defecto) -->
             <div id="navMenu" class="hidden md:flex items-center gap-4">
                 <!-- Icono Home (ACTIVO EN ESTA PÁGINA) -->
-                <a href="" 
+                <a href="index.html" 
                    class="nav-icon active"
                    title="Home">
                     <i data-feather="home" class="w-5 h-5"></i>
@@ -564,13 +577,22 @@
                     <span class="nav-tooltip">Beats</span>
                 </a>
                 
-                <!-- Icono Cart -->
-                <a href="Shop cart.html" 
+                <!-- Icono Merch -->
+                <a href="merch.html" 
+                   class="nav-icon"
+                   title="Merch">
+                    <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                    <span class="nav-tooltip">Official Merch</span>
+                </a>
+                
+                <!-- Icono Cart (AHORA ABRE SIDEBAR) -->
+                <a href="#" 
                    class="nav-icon relative"
-                   title="Cart">
+                   title="Cart"
+                   id="cartIcon">
                     <i data-feather="shopping-cart" class="w-5 h-5"></i>
                     <span class="nav-tooltip">Shopping Cart</span>
-                    <!-- Contador de carrito (opcional) -->
+                    <!-- Contador de carrito -->
                     <span id="cartCounter" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
                 </a>
             </div>
@@ -583,7 +605,7 @@
                 <div class="flex justify-between items-center mb-8">
                     <div class="flex items-center gap-3">
                         <img 
-                            src="C:\Users\kevin\OneDrive\Desktop\Momentum\logo transparente.png"
+                            src="assets/Momentum Records Logo.PNG"
                             alt="Momentum Records Logo"
                             class="w-8 h-8 object-contain"
                         >
@@ -598,7 +620,7 @@
                 
                 <!-- Iconos en menú móvil -->
                 <div class="space-y-4">
-                    <a href="Index.html" 
+                    <a href="index.html" 
                        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-white">
                         <i data-feather="home" class="w-5 h-5"></i>
                         <span>Home</span>
@@ -622,8 +644,16 @@
                         <span>Beats</span>
                     </a>
                     
-                    <a href="Shop cart.html" 
-                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative">
+                    <a href="merch.html" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300">
+                        <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                        <span>Official Merch</span>
+                    </a>
+                    
+                    <!-- Cart en móvil (AHORA ABRE SIDEBAR) -->
+                    <a href="#" 
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-colors text-gray-300 relative"
+                       id="mobileCartIcon">
                         <i data-feather="shopping-cart" class="w-5 h-5"></i>
                         <span>Shopping Cart</span>
                         <span id="mobileCartCounter" class="absolute left-8 -top-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
@@ -640,12 +670,63 @@
             </div>
         </div>
     </nav>
-                
-        <!-- CATEGORIAS -->
+
+    <!-- Sidebar del Carrito -->
+    <div id="cartSidebar" class="cart-sidebar fixed top-0 right-0 h-full w-96 bg-black/95 backdrop-blur-lg border-l border-gray-800 transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="h-full flex flex-col">
+            <!-- Header del carrito -->
+            <div class="p-6 border-b border-gray-800">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold">
+                        <i data-feather="shopping-cart" class="w-5 h-5 inline mr-2"></i>
+                        Your Cart
+                    </h3>
+                    <button id="closeCart" class="text-gray-400 hover:text-white">
+                        <i data-feather="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                <p id="cartSubtotal" class="text-gray-400 mt-2">Total: $0.00</p>
+            </div>
+            
+            <!-- Items del carrito -->
+            <div id="cartItems" class="flex-1 overflow-y-auto p-6">
+                <div class="text-center text-gray-500 py-12">
+                    <i data-feather="shopping-bag" class="w-12 h-12 mx-auto mb-4"></i>
+                    <p>Your cart is empty</p>
+                </div>
+            </div>
+            
+            <!-- Footer del carrito -->
+            <div class="p-6 border-t border-gray-800">
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Subtotal</span>
+                    <span id="cartTotal" class="text-xl font-bold">$0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-400">Shipping</span>
+                    <span id="shippingCost" class="text-gray-300">Calculated at checkout</span>
+                </div>
+                <button id="checkoutBtn" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-lg font-bold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    Proceed to Checkout
+                </button>
+                <p class="text-gray-400 text-sm text-center mt-4">Free shipping on orders over $50</p>
+                <div class="mt-4 text-center">
+                    <a href="merch.html" class="text-indigo-400 hover:text-indigo-300 text-sm">
+                        <i data-feather="arrow-left" class="w-3 h-3 inline mr-1"></i>
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal (tu contenido actual del index.html) -->
+    <main>
+        <!-- CATEGORÍAS -->
         <section class="container mx-auto px-4 md:px-8 py-12">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">Whatever, <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Whenever.</span></h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <a href="file:///C:/Users/kevin/OneDrive/Desktop/beats%20section.html" class="category-card group">
+                <a href="Beats.html" class="category-card group">
                     <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
                         <img src="https://i.pinimg.com/736x/22/59/20/2259204d786fc53a42e721ba8c56e7c3.jpg" alt="Streetwear" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
@@ -653,7 +734,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="/categories/tech.html" class="category-card group">
+                <a href="#" class="category-card group">
                     <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
                         <img src="https://i.pinimg.com/1200x/46/d3/8f/46d38fc256d008517a0cee3db78d28ce.jpg" alt="Tech Gear" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
@@ -661,7 +742,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="/categories/lifestyle.html" class="category-card group">
+                <a href="#" class="category-card group">
                     <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
                         <img src="https://i.pinimg.com/1200x/c7/87/15/c78715374fefef6900a9d75702bebb90.jpg" alt="Lifestyle" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
@@ -669,7 +750,7 @@
                         </div>
                     </div>
                 </a>
-                <a href="/categories/accessories.html" class="category-card group">
+                <a href="merch.html" class="category-card group">
                     <div class="relative overflow-hidden rounded-2xl shadow-lg h-64 md:h-80 border border-gray-800 hover:border-gray-600 transition-colors duration-300">
                         <img src="https://i.pinimg.com/1200x/4c/9a/15/4c9a1571402cf7c3ad7265ac56ea1f2f.jpg" alt="Accessories" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex items-end p-6">
@@ -680,203 +761,203 @@
             </div>
         </section>
     
-
-    <!-- Trust & Credibility Banners -->
-<section class="container mx-auto px-4 md:px-8 py-12">
-    <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">
-        Why Trust <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Momentum?</span>
-    </h2>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Banner 1: Premium Quality -->
-        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-indigo-500 transition-all duration-500 p-6">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+        <!-- Trust & Credibility Banners -->
+        <section class="container mx-auto px-4 md:px-8 py-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-12">
+                Why Trust <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Momentum?</span>
+            </h2>
             
-            <div class="relative z-10">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-4">
-                    <i data-feather="award" class="w-7 h-7 text-white"></i>
-                </div>
-                
-                <h3 class="text-xl font-bold text-white mb-3">Premium Quality</h3>
-                <p class="text-gray-400 mb-4">Studio-grade beats mixed & mastered by professionals with industry-standard equipment</p>
-                
-                <div class="flex items-center text-sm text-indigo-300">
-                    <span>100% Satisfaction</span>
-                    <i data-feather="check-circle" class="w-4 h-4 ml-2"></i>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-        </div>
-
-        <!-- Banner 2: Instant Delivery -->
-        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-green-500 transition-all duration-500 p-6">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full -translate-y-12 translate-x-12"></div>
-            
-            <div class="relative z-10">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4">
-                    <i data-feather="zap" class="w-7 h-7 text-white"></i>
-                </div>
-                
-                <h3 class="text-xl font-bold text-white mb-3">Instant Delivery</h3>
-                <p class="text-gray-400 mb-4">Download your purchased beats immediately after payment. No waiting, no delays</p>
-                
-                <div class="flex items-center text-sm text-green-300">
-                    <span>24/7 Access</span>
-                    <i data-feather="clock" class="w-4 h-4 ml-2"></i>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-        </div>
-
-        <!-- Banner 3: Secure Payments -->
-        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-blue-500 transition-all duration-500 p-6">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full -translate-y-12 translate-x-12"></div>
-            
-            <div class="relative z-10">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4">
-                    <i data-feather="shield" class="w-7 h-7 text-white"></i>
-                </div>
-                
-                <h3 class="text-xl font-bold text-white mb-3">Secure Payments</h3>
-                <p class="text-gray-400 mb-4">SSL encrypted transactions with multiple payment options. Your security is our priority</p>
-                
-                <div class="flex items-center text-sm text-blue-300">
-                    <span>Bank-Level Security</span>
-                    <i data-feather="lock" class="w-4 h-4 ml-2"></i>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-        </div>
-
-        <!-- Banner 4: Artist Support -->
-        <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-pink-500 transition-all duration-500 p-6">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-500/10 to-rose-500/10 rounded-full -translate-y-12 translate-x-12"></div>
-            
-            <div class="relative z-10">
-                <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-4">
-                    <i data-feather="headphones" class="w-7 h-7 text-white"></i>
-                </div>
-                
-                <h3 class="text-xl font-bold text-white mb-3">Artist Support</h3>
-                <p class="text-gray-400 mb-4">Dedicated support team & free mixing consultation with every purchase</p>
-                
-                <div class="flex items-center text-sm text-pink-300">
-                    <span>1-on-1 Assistance</span>
-                    <i data-feather="message-circle" class="w-4 h-4 ml-2"></i>
-                </div>
-            </div>
-            
-            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-        </div>
-    </div>
-</section>
-
-<!-- Social Proof Banners -->
-<section class="container mx-auto px-4 md:px-8 py-12">
-    <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4">
-        Best coverage for <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Artists Worldwide</span>
-    </h2>
-    <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">Join thousands of successful artists who launched their careers with Momentum Productions</p>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <!-- Banner 1: Numbers -->
-        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900/30 to-purple-900/30 border border-indigo-500/20 p-6">
-            <div class="text-center">
-                <div class="text-5xl font-bold bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-2">
-                    1K+
-                </div>
-                <div class="text-gray-300 font-semibold mb-2">Beats Sold</div>
-                <div class="text-sm text-gray-400">To artists in 14+ countries</div>
-                
-                <div class="mt-4 flex justify-center">
-                    <div class="flex -space-x-2">
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 border-2 border-black"></div>
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 border-2 border-black"></div>
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 border-2 border-black"></div>
-                        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 border-2 border-black"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Banner 2: Charts -->
-        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/20 p-6">
-            <div class="text-center">
-                <div class="text-5xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent mb-2">
-                    50+
-                </div>
-                <div class="text-gray-300 font-semibold mb-2">Charting Songs</div>
-                <div class="text-sm text-gray-400">Created with our beats worldwide</div>
-                
-                <div class="mt-6">
-                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">
-                        <i data-feather="trending-up" class="w-4 h-4 mr-2"></i>
-                        Spotify Charts
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Banner 3: Industry -->
-        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border border-blue-500/20 p-6">
-            <div class="text-center">
-                <div class="text-5xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent mb-2">
-                    5+ Years
-                </div>
-                <div class="text-gray-300 font-semibold mb-2">Industry Experience</div>
-                <div class="text-sm text-gray-400">Professional audio engineering</div>
-                
-                <div class="mt-4">
-                    <div class="flex justify-center items-center space-x-2">
-                        <div class="w-6 h-6">
-                            <i data-feather="music" class="w-full h-full text-blue-400"></i>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Banner 1: Premium Quality -->
+                <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-indigo-500 transition-all duration-500 p-6">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center mb-4">
+                            <i data-feather="award" class="w-7 h-7 text-white"></i>
                         </div>
-                        <div class="w-6 h-6">
-                            <i data-feather="mic" class="w-full h-full text-blue-400"></i>
+                        
+                        <h3 class="text-xl font-bold text-white mb-3">Premium Quality</h3>
+                        <p class="text-gray-400 mb-4">Studio-grade beats mixed & mastered by professionals with industry-standard equipment</p>
+                        
+                        <div class="flex items-center text-sm text-indigo-300">
+                            <span>100% Satisfaction</span>
+                            <i data-feather="check-circle" class="w-4 h-4 ml-2"></i>
                         </div>
-                        <div class="w-6 h-6">
-                            <i data-feather="volume-2" class="w-full h-full text-blue-400"></i>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+
+                <!-- Banner 2: Instant Delivery -->
+                <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-green-500 transition-all duration-500 p-6">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-4">
+                            <i data-feather="zap" class="w-7 h-7 text-white"></i>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-3">Instant Delivery</h3>
+                        <p class="text-gray-400 mb-4">Download your purchased beats immediately after payment. No waiting, no delays</p>
+                        
+                        <div class="flex items-center text-sm text-green-300">
+                            <span>24/7 Access</span>
+                            <i data-feather="clock" class="w-4 h-4 ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-green-500 to-emerald-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+
+                <!-- Banner 3: Secure Payments -->
+                <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-blue-500 transition-all duration-500 p-6">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-4">
+                            <i data-feather="shield" class="w-7 h-7 text-white"></i>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-3">Secure Payments</h3>
+                        <p class="text-gray-400 mb-4">SSL encrypted transactions with multiple payment options. Your security is our priority</p>
+                        
+                        <div class="flex items-center text-sm text-blue-300">
+                            <span>Bank-Level Security</span>
+                            <i data-feather="lock" class="w-4 h-4 ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+
+                <!-- Banner 4: Artist Support -->
+                <div class="trust-card group relative overflow-hidden rounded-2xl bg-gradient-to-br from-gray-900 to-black border border-gray-800 hover:border-pink-500 transition-all duration-500 p-6">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-pink-500/10 to-rose-500/10 rounded-full -translate-y-12 translate-x-12"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-4">
+                            <i data-feather="headphones" class="w-7 h-7 text-white"></i>
+                        </div>
+                        
+                        <h3 class="text-xl font-bold text-white mb-3">Artist Support</h3>
+                        <p class="text-gray-400 mb-4">Dedicated support team & free mixing consultation with every purchase</p>
+                        
+                        <div class="flex items-center text-sm text-pink-300">
+                            <span>1-on-1 Assistance</span>
+                            <i data-feather="message-circle" class="w-4 h-4 ml-2"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-rose-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Proof Banners -->
+        <section class="container mx-auto px-4 md:px-8 py-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white mb-4">
+                Best coverage for <span class="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">Artists Worldwide</span>
+            </h2>
+            <p class="text-gray-400 text-center mb-12 max-w-2xl mx-auto">Join thousands of successful artists who launched their careers with Momentum Productions</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Banner 1: Numbers -->
+                <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900/30 to-purple-900/30 border border-indigo-500/20 p-6">
+                    <div class="text-center">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-2">
+                            1K+
+                        </div>
+                        <div class="text-gray-300 font-semibold mb-2">Beats Sold</div>
+                        <div class="text-sm text-gray-400">To artists in 14+ countries</div>
+                        
+                        <div class="mt-4 flex justify-center">
+                            <div class="flex -space-x-2">
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 border-2 border-black"></div>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 border-2 border-black"></div>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-red-500 to-orange-500 border-2 border-black"></div>
+                                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 border-2 border-black"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Banner 4: Guarantee -->
-        <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-500/20 p-6">
-            <div class="text-center">
-                <div class="text-5xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent mb-2">
-                    30-Day
+                <!-- Banner 2: Charts -->
+                <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-green-900/30 to-emerald-900/30 border border-green-500/20 p-6">
+                    <div class="text-center">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-green-300 to-emerald-300 bg-clip-text text-transparent mb-2">
+                            50+
+                        </div>
+                        <div class="text-gray-300 font-semibold mb-2">Charting Songs</div>
+                        <div class="text-sm text-gray-400">Created with our beats worldwide</div>
+                        
+                        <div class="mt-6">
+                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-green-500/20 text-green-300 text-sm">
+                                <i data-feather="trending-up" class="w-4 h-4 mr-2"></i>
+                                Spotify Charts
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="text-gray-300 font-semibold mb-2">Money Back Guarantee</div>
-                <div class="text-sm text-gray-400">If you're not 100% satisfied</div>
-                
-                <div class="mt-4">
-                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-sm">
-                        <i data-feather="shield" class="w-4 h-4 mr-2"></i>
-                        Risk-Free Purchase
+
+                <!-- Banner 3: Industry -->
+                <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-900/30 to-cyan-900/30 border border-blue-500/20 p-6">
+                    <div class="text-center">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-blue-300 to-cyan-300 bg-clip-text text-transparent mb-2">
+                            5+ Years
+                        </div>
+                        <div class="text-gray-300 font-semibold mb-2">Industry Experience</div>
+                        <div class="text-sm text-gray-400">Professional audio engineering</div>
+                        
+                        <div class="mt-4">
+                            <div class="flex justify-center items-center space-x-2">
+                                <div class="w-6 h-6">
+                                    <i data-feather="music" class="w-full h-full text-blue-400"></i>
+                                </div>
+                                <div class="w-6 h-6">
+                                    <i data-feather="mic" class="w-full h-full text-blue-400"></i>
+                                </div>
+                                <div class="w-6 h-6">
+                                    <i data-feather="volume-2" class="w-full h-full text-blue-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Banner 4: Guarantee -->
+                <div class="stats-banner group relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-900/30 to-yellow-900/30 border border-amber-500/20 p-6">
+                    <div class="text-center">
+                        <div class="text-5xl font-bold bg-gradient-to-r from-amber-300 to-yellow-300 bg-clip-text text-transparent mb-2">
+                            30-Day
+                        </div>
+                        <div class="text-gray-300 font-semibold mb-2">Money Back Guarantee</div>
+                        <div class="text-sm text-gray-400">If you're not 100% satisfied</div>
+                        
+                        <div class="mt-4">
+                            <div class="inline-flex items-center px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 text-sm">
+                                <i data-feather="shield" class="w-4 h-4 mr-2"></i>
+                                Risk-Free Purchase
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    
-    <!-- Client Logos -->
-    <div class="mt-12 pt-8 border-t border-gray-800">
-        <p class="text-gray-400 text-center mb-6"></p>
-        <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70">
-            <div class="text-gray-300 font-bold text-xl">SPOTIFY</div>
-            <div class="text-gray-300 font-bold text-xl">APPLE MUSIC</div>
-            <div class="text-gray-300 font-bold text-xl">TIDAL</div>
-            <div class="text-gray-300 font-bold text-xl">SOUNDCLOUD</div>
-            <div class="text-gray-300 font-bold text-xl">BEATSTARS</div>
-        </div>
-    </div>
-</section>
-        <!-- Newsletter - SIMPLIFICADA Y FUNCIONAL -->
+            
+            <!-- Client Logos -->
+            <div class="mt-12 pt-8 border-t border-gray-800">
+                <p class="text-gray-400 text-center mb-6"></p>
+                <div class="flex flex-wrap justify-center items-center gap-8 md:gap-12 opacity-70">
+                    <div class="text-gray-300 font-bold text-xl">SPOTIFY</div>
+                    <div class="text-gray-300 font-bold text-xl">APPLE MUSIC</div>
+                    <div class="text-gray-300 font-bold text-xl">TIDAL</div>
+                    <div class="text-gray-300 font-bold text-xl">SOUNDCLOUD</div>
+                    <div class="text-gray-300 font-bold text-xl">BEATSTARS</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Newsletter -->
         <section class="container mx-auto px-4 py-12 fade-in-up">
             <div class="dark-card p-6 rounded-xl text-center max-w-2xl mx-auto">
                 <h2 class="text-2xl font-bold mb-4">Stay Updated</h2>
@@ -898,17 +979,16 @@
         </section>
     </main>
 
-     <!-- Footer -->
+    <!-- Footer -->
     <footer class="bg-gray-900 border-t border-gray-800 py-8">
         <div class="container mx-auto px-4">
             <div class="flex flex-col md:flex-row justify-between items-center">
                 <div class="mb-4 md:mb-0">
                     <div class="flex items-center gap-1 mb-2">
-    <img src="assets/Momentum Records Logo.PNG" alt="Momentum Records Logo" class="w-20 h-20">
-    <span class="text-xl font-bold">Momentum Records.</span>
-</div>
-            
-                     <p class="text-gray-400 text-center"> Premium audio production since 2021.</p>
+                        <img src="assets/Momentum Records Logo.PNG" alt="Momentum Records Logo" class="w-20 h-20">
+                        <span class="text-xl font-bold">Momentum Records.</span>
+                    </div>
+                    <p class="text-gray-400 text-center"> Premium audio production since 2021.</p>
                 </div>
                 
                 <div class="flex gap-4">
@@ -916,12 +996,12 @@
                         <i data-feather="instagram" class="w-5 h-5.5"></i>
                     </a>
                     <a href="#" class="text-gray-400 text-center hover:text-white">
-        <i data-feather="x" class="w-6 h-5.5"></i>
-    </a>
+                        <i data-feather="x" class="w-6 h-5.5"></i>
+                    </a>
                     <a href="#" class="text-gray-400 text-center hover:text-white">
                         <i data-feather="youtube" class="w-6 h-5.5"></i>
                     </a>
-                    <a href="#" class="text-gray-400  text-center hover:text-white">
+                    <a href="#" class="text-gray-400 text-center hover:text-white">
                         <i data-feather="facebook" class="w-5 h-5.2"></i>
                     </a>
                 </div>
@@ -943,6 +1023,122 @@
     <script>
         // Inicializar Feather Icons
         feather.replace();
+        
+        // Sistema de Carrito
+        let cart = JSON.parse(localStorage.getItem('momentumCart')) || [];
+        
+        // Actualizar contador del carrito
+        function updateCartCounter() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const cartCounter = document.getElementById('cartCounter');
+            const mobileCartCounter = document.getElementById('mobileCartCounter');
+            
+            if (totalItems > 0) {
+                cartCounter.textContent = totalItems;
+                cartCounter.classList.remove('hidden');
+                mobileCartCounter.textContent = totalItems;
+                mobileCartCounter.classList.remove('hidden');
+            } else {
+                cartCounter.classList.add('hidden');
+                mobileCartCounter.classList.add('hidden');
+            }
+        }
+        
+        // Actualizar carrito en la UI
+        function updateCartUI() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotal = document.getElementById('cartTotal');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-center text-gray-500 py-12">
+                        <i data-feather="shopping-bag" class="w-12 h-12 mx-auto mb-4"></i>
+                        <p>Your cart is empty</p>
+                    </div>
+                `;
+                cartTotal.textContent = '$0.00';
+                cartSubtotal.textContent = 'Total: $0.00';
+                checkoutBtn.disabled = true;
+                feather.replace();
+                updateCartCounter();
+                return;
+            }
+            
+            let total = 0;
+            let itemsHTML = '';
+            
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                itemsHTML += `
+                    <div class="flex items-center gap-4 p-4 rounded-lg bg-gray-900/50 mb-4">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-semibold">${item.name}</h4>
+                            <p class="text-sm text-gray-400">Size: ${item.size}</p>
+                            <div class="flex items-center justify-between mt-2">
+                                <div class="flex items-center gap-2">
+                                    <button class="quantity-btn w-6 h-6 rounded border border-gray-700 hover:border-indigo-500" data-index="${index}" data-action="decrease">-</button>
+                                    <span class="w-8 text-center">${item.quantity}</span>
+                                    <button class="quantity-btn w-6 h-6 rounded border border-gray-700 hover:border-indigo-500" data-index="${index}" data-action="increase">+</button>
+                                </div>
+                                <span class="font-bold">$${itemTotal.toFixed(2)}</span>
+                            </div>
+                        </div>
+                        <button class="cart-item-remove text-gray-400 hover:text-red-500" data-index="${index}">
+                            <i data-feather="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+            });
+            
+            cartItems.innerHTML = itemsHTML;
+            cartTotal.textContent = `$${total.toFixed(2)}`;
+            cartSubtotal.textContent = `Total: $${total.toFixed(2)}`;
+            checkoutBtn.disabled = false;
+            
+            // Agregar event listeners a los botones del carrito
+            document.querySelectorAll('.quantity-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    const action = this.dataset.action;
+                    
+                    if (action === 'increase') {
+                        cart[index].quantity++;
+                    } else if (action === 'decrease') {
+                        if (cart[index].quantity > 1) {
+                            cart[index].quantity--;
+                        } else {
+                            cart.splice(index, 1);
+                        }
+                    }
+                    
+                    saveCart();
+                    updateCartUI();
+                    updateCartCounter();
+                });
+            });
+            
+            document.querySelectorAll('.cart-item-remove').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    cart.splice(index, 1);
+                    saveCart();
+                    updateCartUI();
+                    updateCartCounter();
+                });
+            });
+            
+            feather.replace();
+        }
+        
+        // Guardar carrito en localStorage
+        function saveCart() {
+            localStorage.setItem('momentumCart', JSON.stringify(cart));
+        }
         
         // Control del menú móvil
         document.addEventListener('DOMContentLoaded', function() {
@@ -973,11 +1169,10 @@
             // Event listeners
             menuToggle.addEventListener('click', openMenu);
             closeMenu.addEventListener('click', closeMobileMenu);
-            overlay.addEventListener('click', closeMobileMenu);
-            
-            // Cerrar menú al hacer clic en un enlace (solo móvil)
-            mobileMenu.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', closeMobileMenu);
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    closeMobileMenu();
+                }
             });
             
             // Cerrar menú con tecla ESC
@@ -987,7 +1182,66 @@
                 }
             });
             
-            // Actualizar iconos cuando se redimensione la ventana
+            // Inicializar carrito
+            updateCartCounter();
+            updateCartUI();
+            
+            // Control del carrito sidebar
+            const cartIcon = document.getElementById('cartIcon');
+            const mobileCartIcon = document.getElementById('mobileCartIcon');
+            const closeCart = document.getElementById('closeCart');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            
+            function openCart() {
+                cartSidebar.classList.remove('translate-x-full');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                feather.replace();
+            }
+            
+            function closeCartSidebar() {
+                cartSidebar.classList.add('translate-x-full');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            cartIcon.addEventListener('click', openCart);
+            mobileCartIcon.addEventListener('click', openCart);
+            closeCart.addEventListener('click', closeCartSidebar);
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay && !cartSidebar.classList.contains('translate-x-full')) {
+                    closeCartSidebar();
+                }
+            });
+            
+            // Botón de checkout
+            checkoutBtn.addEventListener('click', function() {
+                if (cart.length > 0) {
+                    // Redirigir a checkout.html
+                    window.location.href = 'checkout.html';
+                }
+            });
+            
+            // Cerrar menú al hacer clic en enlaces (solo móvil)
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMobileMenu);
+            });
+            
+            // Newsletter form
+            const newsletterForm = document.getElementById('newsletterForm');
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    if(email) {
+                        alert(`Thanks for subscribing with ${email}! Check your inbox for updates.`);
+                        this.reset();
+                    }
+                });
+            }
+            
+            // Actualizar iconos al redimensionar
             window.addEventListener('resize', function() {
                 if (window.innerWidth >= 768) {
                     closeMobileMenu();
@@ -995,40 +1249,8 @@
                 feather.replace();
             });
             
-            // Inicializar contador del carrito
-            const cartCounter = document.getElementById('cartCounter');
-            const mobileCartCounter = document.getElementById('mobileCartCounter');
-            
-            // Función para actualizar contador
-            function updateCartCounter(count) {
-                if (count > 0) {
-                    cartCounter.textContent = count;
-                    cartCounter.classList.remove('hidden');
-                    mobileCartCounter.textContent = count;
-                    mobileCartCounter.classList.remove('hidden');
-                } else {
-                    cartCounter.classList.add('hidden');
-                    mobileCartCounter.classList.add('hidden');
-                }
-            }
-            
-            // Ejemplo: iniciar con 0 items
-            updateCartCounter(0);
-            
-            // Función para manejar newsletter
-            function handleNewsletter(event) {
-                event.preventDefault();
-                const email = event.target.querySelector('input[type="email"]').value;
-                if(email) {
-                    alert(`Thanks for subscribing with ${email}! Check your inbox for updates.`);
-                    event.target.reset();
-                }
-            }
-            
-            // Initialize components
-            console.log('Momentum Records loaded');
+            console.log('Momentum Records Homepage loaded with cart sidebar');
         });
     </script>
-
 </body>
 </html>
